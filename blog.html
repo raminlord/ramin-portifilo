@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- ========== SEO META TAGS ========== -->
+    <title>مجله تخصصی | بلاگ رامین خوئی - مقالات طراحی لوکس و سئو</title>
+    <meta name="description" content="مقالات تخصصی در زمینه طراحی لوکس، تجربه کاربری، سئو پیشرفته و توسعه وب. جدیدترین مطالب و تکنیک‌های روز دنیا.">
+    <meta name="keywords" content="مقالات طراحی لوکس, مجله تخصصی سئو, بلاگ برنامه نویسی, آموزش UX, طراحی وب حرفه‌ای">
+    <meta name="author" content="رامین خوئی">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.raminkhoie.ir/blog.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="مجله تخصصی | بلاگ رامین خوئی">
+    <meta property="og:description" content="جدیدترین مقالات در حوزه طراحی لوکس و توسعه وب">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.raminkhoie.ir/blog.html">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* استایل‌های اختصاصی صفحه بلاگ */
+        .blog-archive-header {
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A2E 100%);
+            padding: 120px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .blog-archive-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .blog-archive-header p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .blog-archive-header .breadcrumb {
+            margin-top: 30px;
+        }
+        
+        .breadcrumb a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        .archive-stats {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 15px;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .archive-stats span {
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        /* فیلتر دسته‌بندی */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 25px;
+            border-radius: 50px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--gold);
+            color: var(--dark);
+            border-color: var(--gold);
+        }
+        
+        /* بدون نتیجه */
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+        }
+        
+        .no-results i {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        /* سایدبار */
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 50px;
+        }
+        
+        .sidebar {
+            position: sticky;
+            top: 30px;
+            align-self: start;
+        }
+        
+        .sidebar-widget {
+            background: var(--dark-card);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .sidebar-widget h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            border-right: 3px solid var(--gold);
+            padding-right: 12px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--gray);
+            color: var(--white);
+        }
+        
+        .search-box button {
+            background: var(--gold);
+            border: none;
+            padding: 0 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .popular-posts li,
+        .categories-list li {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+        
+        .popular-posts a,
+        .categories-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .popular-posts a:hover,
+        .categories-list a:hover {
+            color: var(--gold);
+            transform: translateX(-5px);
+        }
+        
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tag-cloud a {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .tag-cloud a:hover {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        
+        @media (max-width: 992px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .blog-archive-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER / NAVIGATION ========== -->
+    <section class="blog-archive-header">
+        <div class="container">
+            <div class="badge" style="display: inline-block; margin-bottom: 20px;">مجله تخصصی</div>
+            <h1>بلاگ <span style="color: var(--gold);">رامین خوئی</span></h1>
+            <p>جدیدترین مقالات و آموزش‌های حوزه طراحی لوکس، توسعه وب و سئو پیشرفته</p>
+            <div class="breadcrumb">
+                <a href="index.html">خانه</a> / <span style="color: var(--gold);">مجله تخصصی</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MAIN BLOG ARCHIVE ========== -->
+    <main class="blog-archive" style="padding: 80px 0;">
+        <div class="container">
+            
+            <!-- آمار و اطلاعات -->
+            <div style="text-align: center;">
+                <div class="archive-stats">
+                    <i class="fas fa-newspaper" style="color: var(--gold); margin-left: 8px;"></i>
+                    تاکنون <span>۱۲</span> مقاله تخصصی · <span>۵,۲۳۰+</span> مطالعه · آخرین بروزرسانی: <span>دی ۱۴۰۳</span>
+                </div>
+            </div>
+            
+            <!-- فیلتر دسته‌بندی -->
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">همه مقالات</button>
+                <button class="filter-btn" data-category="ux">تجربه کاربری (UX)</button>
+                <button class="filter-btn" data-category="seo">سئو</button>
+                <button class="filter-btn" data-category="branding">برندینگ لوکس</button>
+                <button class="filter-btn" data-category="development">توسعه وب</button>
+            </div>
+            
+            <!-- لایه اصلی: مقالات + سایدبار -->
+            <div class="blog-layout">
+                
+                <!-- بخش مقالات کارتی -->
+                <div class="blog-grid" id="blogArchiveGrid">
+                    <!-- مقالات توسط جاوااسکریپت动态 بارگذاری می‌شوند -->
+                </div>
+                
+                <!-- سایدبار (اختیاری اما حرفه‌ای) -->
+                <aside class="sidebar">
+                    <!-- جستجو -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-search"></i> جستجو</h3>
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="عبارت مورد نظر...">
+                            <button id="searchBtn"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- پست‌های محبوب -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-fire"></i> پرطرفدارترین</h3>
+                        <ul class="popular-posts" id="popularPosts">
+                            <!-- داینامیک -->
+                        </ul>
+                    </div>
+                    
+                    <!-- دسته‌بندی -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-folder"></i> دسته‌بندی</h3>
+                        <ul class="categories-list" id="categoriesList">
+                            <!-- داینامیک -->
+                        </ul>
+                    </div>
+                    
+                    <!-- برچسب‌ها -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-tags"></i> برچسب‌ها</h3>
+                        <div class="tag-cloud" id="tagCloud">
+                            <!-- داینامیک -->
+                        </div>
+                    </div>
+                    
+                    <!-- خبرنامه -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-envelope"></i> خبرنامه</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 15px;">اولین نفری باشید که از مقالات جدید مطلع می‌شوید.</p>
+                        <div class="search-box">
+                            <input type="email" placeholder="ایمیل شما" id="newsletterEmail">
+                            <button id="newsletterBtn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="luxury-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3><i class="fas fa-crown"></i> استودیو طراحی لوکس رامین</h3>
+                    <p>با بیش از ۵ سال تجربه در طراحی وب‌سایت‌های لوکس، آماده همکاری با برندهای برتر برای خلق تجربه‌های دیجیتال ماندگار هستیم.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <h3><i class="fas fa-phone-alt"></i> تماس سریع</h3>
+                    <div class="phone-number">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>+۹۸ ۹۱۴ ۲۵۳ ۹۳۳۲</span>
+                    </div>
+                    <div class="phone-number">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>۰۹۳۶۵۰۸۲۳۷۱ (واتساپ)</span>
+                    </div>
+                    <div class="support-text">
+                        <i class="fas fa-headset"></i>
+                        <span>پشتیبانی ۲۴ ساعته، ۷ روز هفته</span>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3><i class="fas fa-link"></i> لینک‌های مفید</h3>
+                    <ul>
+                        <li><a href="index.html#portfolio">نمونه کارها</a></li>
+                        <li><a href="blog.html">مجله تخصصی</a></li>
+                        <li><a href="index.html#about">درباره من</a></li>
+                        <li><a href="index.html#contact">مشاوره رایگان</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>© ۲۰۲۵ کلیه حقوق برای <strong>استودیو طراحی لوکس رامین خوئی</strong> محفوظ است.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="#">قوانین و مقررات</a>
+                    <span class="separator">|</span>
+                    <a href="#">حریم خصوصی</a>
+                    <span class="separator">|</span>
+                    <a href="#">شرایط همکاری</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // ========== دیتابیس مقالات (برای نمایش در آرشیو) ==========
+        const blogPosts = [
+            {
+                id: 1,
+                title: "۷ اصل طراحی تجربه کاربری لوکس برای برندهای بین‌المللی",
+                excerpt: "چگونه با طراحی مینیمال و جزئیات طلایی، برند خود را متمایز کنید و تجربه‌ای ماندگار برای مشتریان لوکس بسازید.",
+                image: "https://placehold.co/600x400/1a1a2e/white?text=UX+لوکس",
+                date: "۱۵ فروردین ۱۴۰۴",
+                readTime: "۸ دقیقه",
+                category: "ux",
+                tags: ["UX", "طراحی لوکس", "تجربه کاربری"],
+                views: 1250,
+                link: "blog-post-1.html"
+            },
+            {
+                id: 2,
+                title: "بهترین استراتژی‌های سئو برای وب‌سایت‌های لوکس در سال ۲۰۲۵",
+                excerpt: "راهکارهای عملی برای رتبه اول گوگل در کلمات کلیدی لوکس و رقابتی. از تحقیق کلمه کلیدی تا لینک‌سازی حرفه‌ای.",
+                image: "https://placehold.co/600x400/16213e/white?text=سئو+پیشرفته",
+                date: "۵ اسفند ۱۴۰۳",
+                readTime: "۱۲ دقیقه",
+                category: "seo",
+                tags: ["سئو", "گوگل", "کلمات کلیدی لوکس"],
+                views: 890,
+                link: "blog-post-2.html"
+            },
+            {
+                id: 3,
+                title: "چگونه هویت بصری لوکس برای برند خود بسازیم؟",
+                excerpt: "از انتخاب رنگ طلایی تا تایپوگرافی حرفه‌ای، همه چیز درباره برندینگ لوکس. راهنمای کامل برای استارتاپ‌های لاکچری.",
+                image: "https://placehold.co/600x400/0f3460/white?text=برندینگ",
+                date: "۲۰ دی ۱۴۰۳",
+                readTime: "۶ دقیقه",
+                category: "branding",
+                tags: ["برندینگ", "هویت بصری", "رنگ طلایی"],
+                views: 2100,
+                link: "blog-post-3.html"
+            },
+            {
+                id: 4,
+                title: "معماری میکروسرویس در پروژه‌های بزرگ: مزایا و چالش‌ها",
+                excerpt: "بررسی تخصصی معماری میکروسرویس برای پلتفرم‌های لوکس و پرترافیک با مثال‌های واقعی از پروژه‌های موفق.",
+                image: "https://placehold.co/600x400/1a1a2e/white?text=میکروسرویس",
+                date: "۱۰ بهمن ۱۴۰۳",
+                readTime: "۱۵ دقیقه",
+                category: "development",
+                tags: ["میکروسرویس", "معماری نرم‌افزار", "بک‌اند"],
+                views: 567,
+                link: "blog-post-4.html"
+            },
+            {
+                id: 5,
+                title: "۱۰ ابزار ضروری برای طراحان لوکس در سال ۲۰۲۵",
+                excerpt: "معرفی جدیدترین و حرفه‌ای‌ترین ابزارهای طراحی و توسعه برای خلق تجربه‌های لوکس و منحصر‌به‌فرد.",
+                image: "https://placehold.co/600x400/16213e/white?text=ابزار+طراحی",
+                date: "۲۵ آذر ۱۴۰۳",
+                readTime: "۷ دقیقه",
+                category: "ux",
+                tags: ["ابزار طراحی", "Figma", "پلاگین"],
+                views: 734,
+                link: "blog-post-5.html"
+            }
+        ];
+        
+        // تابع رندر مقالات
+        function renderPosts(posts) {
+            const grid = document.getElementById('blogArchiveGrid');
+            if (!grid) return;
+            
+            if (posts.length === 0) {
+                grid.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><p>نتیجه‌ای یافت نشد. عبارت دیگری جستجو کنید.</p></div>`;
+                return;
+            }
+            
+            grid.innerHTML = posts.map(post => `
+                <article class="blog-card">
+                    <div class="blog-image" style="background-image: url('${post.image}')"></div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="far fa-clock"></i> ${post.readTime} مطالعه</span>
+                            <span><i class="fas fa-eye"></i> ${post.views} بازدید</span>
+                        </div>
+                        <h3>${post.title}</h3>
+                        <p>${post.excerpt.substring(0, 120)}${post.excerpt.length > 120 ? '...' : ''}</p>
+                        <div style="margin-bottom: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            ${post.tags.map(tag => `<span style="background: rgba(212,175,55,0.1); padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; color: var(--gold);">${tag}</span>`).join('')}
+                        </div>
+                        <a href="${post.link}" class="read-more">ادامه مطلب <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </article>
+            `).join('');
+        }
+        
+        // بارگذاری اولیه
+        let currentPosts = [...blogPosts];
+        renderPosts(currentPosts);
+        
+        // فیلتر دسته‌بندی
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const category = btn.dataset.category;
+                if (category === 'all') {
+                    currentPosts = [...blogPosts];
+                } else {
+                    currentPosts = blogPosts.filter(post => post.category === category);
+                }
+                renderPosts(currentPosts);
+            });
+        });
+        
+        // جستجو
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+        
+        function searchPosts() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query === '') {
+                currentPosts = [...blogPosts];
+            } else {
+                currentPosts = blogPosts.filter(post => 
+                    post.title.toLowerCase().includes(query) || 
+                    post.excerpt.toLowerCase().includes(query) ||
+                    post.tags.some(tag => tag.toLowerCase().includes(query))
+                );
+            }
+            renderPosts(currentPosts);
+        }
+        
+        if (searchBtn) searchBtn.addEventListener('click', searchPosts);
+        if (searchInput) searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchPosts();
+        });
+        
+        // پرطرفدارترین (سایدبار)
+        const popularList = document.getElementById('popularPosts');
+        if (popularList) {
+            const sortedByViews = [...blogPosts].sort((a,b) => b.views - a.views).slice(0,4);
+            popularList.innerHTML = sortedByViews.map(post => `
+                <li><a href="${post.link}">${post.title} <span style="color: var(--gold);">${post.views} 👁</span></a></li>
+            `).join('');
+        }
+        
+        // دسته‌بندی سایدبار
+        const categoriesList = document.getElementById('categoriesList');
+        if (categoriesList) {
+            const categories = {};
+            blogPosts.forEach(post => {
+                categories[post.category] = (categories[post.category] || 0) + 1;
+            });
+            const categoryNames = {
+                ux: 'تجربه کاربری (UX)',
+                seo: 'سئو',
+                branding: 'برندینگ لوکس',
+                development: 'توسعه وب'
+            };
+            categoriesList.innerHTML = Object.entries(categories).map(([key, count]) => `
+                <li><a href="#" data-cat="${key}">${categoryNames[key] || key} <span style="color: var(--gold);">(${count})</span></a></li>
+            `).join('');
+            
+            // کلیک روی دسته‌بندی در سایدبار
+            document.querySelectorAll('#categoriesList a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const cat = link.dataset.cat;
+                    const targetBtn = document.querySelector(`.filter-btn[data-category="${cat}"]`);
+                    if (targetBtn) targetBtn.click();
+                });
+            });
+        }
+        
+        // تگ کلود
+        const tagCloud = document.getElementById('tagCloud');
+        if (tagCloud) {
+            const allTags = {};
+            blogPosts.forEach(post => {
+                post.tags.forEach(tag => {
+                    allTags[tag] = (allTags[tag] || 0) + 1;
+                });
+            });
+            tagCloud.innerHTML = Object.entries(allTags).map(([tag, count]) => 
+                `<a href="#" data-tag="${tag}">${tag} (${count})</a>`
+            ).join('');
+            
+            // فیلتر با تگ
+            document.querySelectorAll('#tagCloud a').forEach(tagLink => {
+                tagLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tagName = tagLink.dataset.tag;
+                    currentPosts = blogPosts.filter(post => post.tags.includes(tagName));
+                    renderPosts(currentPosts);
+                    // غیرفعال کردن فیلتر فعال
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                });
+            });
+        }
+        
+        // خبرنامه ساده
+        const newsletterBtn = document.getElementById('newsletterBtn');
+        if (newsletterBtn) {
+            newsletterBtn.addEventListener('click', () => {
+                const email = document.getElementById('newsletterEmail').value;
+                if (email && email.includes('@')) {
+                    alert('✅ با تشکر! ایمیل شما با موفقیت ثبت شد.');
+                    document.getElementById('newsletterEmail').value = '';
+                } else {
+                    alert('لطفاً یک ایمیل معتبر وارد کنید.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

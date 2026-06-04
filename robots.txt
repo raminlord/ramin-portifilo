@@ -1,0 +1,21 @@
+# ربات‌های گوگل و دیگر موتورهای جستجو
+User-agent: *
+Allow: /
+Disallow: /assets/private/
+Disallow: /temp/
+
+# نقشه سایت
+Sitemap: https://www.raminkhoie.ir/sitemap.xml
+
+# زمان بازدید مجدد
+Crawl-delay: 5
+
+# ربات گوگل مخصوص
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 3
+
+# ربات بینگ
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5

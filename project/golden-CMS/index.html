@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden CMS — داشبورد حرفه‌ای | Professional Dashboard</title>
+    <!-- Inter + Vazirmatn Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --charcoal: #1a1a1a;
+            --dark-bg: #0f0f0f;
+            --card-bg: rgba(30, 30, 30, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --text-muted: #888888;
+            --border-gold: rgba(212, 175, 55, 0.15);
+            --font-en: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-fa: 'Vazirmatn', 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-fa);
+            height: 100vh;
+            display: flex;
+            background: var(--dark-bg);
+            color: #e0e0e0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* زبان انگلیسی */
+        body.en {
+            font-family: var(--font-en);
+        }
+
+        /* Overlay پس‌زمینه شیشه‌ای */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.06) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+                        linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+            z-index: -2;
+        }
+
+        .glass-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.03"/></svg>');
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ============ SIDEBAR ============ */
+        .sidebar {
+            width: 260px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-gold);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            z-index: 10;
+            transition: border 0.3s;
+        }
+
+        body.en .sidebar {
+            border-left: none;
+            border-right: 1px solid var(--border-gold);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 50px;
+            color: #fff;
+            text-align: right;
+        }
+
+        body.en .logo {
+            text-align: left;
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: transparent;
+            flex-direction: row;
+        }
+
+        body.en .sidebar-menu li a {
+            flex-direction: row;
+        }
+
+        /* برای فارسی آیکون سمت راست */
+        [dir="rtl"] .sidebar-menu li a {
+            flex-direction: row;
+        }
+
+        .sidebar-menu li a i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .sidebar-menu li a:hover {
+            background: rgba(212, 175, 55, 0.08);
+            color: #f0f0f0;
+        }
+        .sidebar-menu li a:hover i {
+            color: var(--gold);
+        }
+
+        .sidebar-menu li a.active {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.1);
+        }
+        .sidebar-menu li a.active i {
+            color: var(--gold);
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-gold);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            padding: 10px 20px;
+            width: 320px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaa;
+            flex-direction: row;
+        }
+
+        body.en .search-bar {
+            flex-direction: row;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+            text-align: right;
+        }
+
+        body.en .search-bar input {
+            text-align: left;
+        }
+
+        .search-bar i {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* دکمه تغییر زبان */
+        .lang-switch {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .lang-switch:hover {
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .notification {
+            position: relative;
+            color: #ccc;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .notification:hover { color: var(--gold); }
+
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--gold);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 20px;
+            font-family: var(--font-en);
+        }
+
+        [dir="rtl"] .badge {
+            right: auto;
+            left: -8px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .user-profile img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+        }
+
+        /* ============ DASHBOARD ============ */
+        .dashboard {
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .welcome p {
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: border-color 0.3s;
+        }
+
+        .kpi-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-header i {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .kpi-value {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #fff;
+            direction: ltr;
+            text-align: right;
+        }
+
+        body.en .kpi-value {
+            text-align: left;
+        }
+
+        .kpi-change {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .positive { color: #4caf50; }
+        .negative { color: #f44336; }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .chart-title {
+            color: #ccc;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-title i {
+            color: var(--gold);
+        }
+
+        /* نمودار میله‌ای طلایی */
+        .graph-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            height: 200px;
+            padding-top: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #D4AF37, #f0d060);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: height 0.4s ease;
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .bar span {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* نمودار دونات */
+        .donut-placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .donut {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#D4AF37 0deg 260deg, #2a2a2a 260deg 360deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .donut-inner {
+            width: 80px;
+            height: 80px;
+            background: #1e1e1e;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1000px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+            .sidebar .logo {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+            .sidebar-menu li a span {
+                display: none;
+            }
+            .sidebar-menu li a {
+                justify-content: center;
+            }
+            .navbar {
+                padding: 15px 20px;
+            }
+            .search-bar {
+                width: 200px;
+            }
+        }
+
+        /* ============ کلاس‌های مخفی برای دو زبان ============ */
+        .fa-text { display: inline; }
+        .en-text { display: none; }
+
+        body.en .fa-text { display: none; }
+        body.en .en-text { display: inline; }
+
+        /* برای عناصر بلاک */
+        .fa-block { display: block; }
+        .en-block { display: none; }
+
+        body.en .fa-block { display: none; }
+        body.en .en-block { display: block; }
+
+        /* placeholder فارسی/انگلیسی */
+        .fa-placeholder::placeholder { content: attr(data-fa); }
+        .en-placeholder::placeholder { content: attr(data-en); }
+
+        body.en .fa-placeholder { display: none; }
+        body:not(.en) .en-placeholder { display: none; }
+    </style>
+</head>
+<body class="fa">
+
+    <div class="bg-overlay"></div>
+    <div class="glass-texture"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+        <div class="logo">Golden<span>CMS</span></div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active">
+                <i class="fas fa-th-large"></i>
+                <span class="fa-text">داشبورد</span>
+                <span class="en-text">Dashboard</span>
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-file-alt"></i>
+                <span class="fa-text">مدیریت محتوا</span>
+                <span class="en-text">Content Management</span>
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-chart-line"></i>
+                <span class="fa-text">تحلیل و آمار</span>
+                <span class="en-text">Analytics</span>
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-photo-video"></i>
+                <span class="fa-text">کتابخانه رسانه</span>
+                <span class="en-text">Media Library</span>
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-search"></i>
+                <span class="fa-text">ابزارهای سئو</span>
+                <span class="en-text">SEO Tools</span>
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-cog"></i>
+                <span class="fa-text">تنظیمات</span>
+                <span class="en-text">Settings</span>
+            </a></li>
+        </ul>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" class="fa-placeholder" placeholder="جستجو در همه موارد...">
+                <input type="text" class="en-placeholder" placeholder="Search anything..." style="display:none;">
+            </div>
+            <div class="nav-actions">
+                <!-- دکمه تغییر زبان -->
+                <button class="lang-switch" onclick="toggleLanguage()" id="langBtn">
+                    <i class="fas fa-globe"></i>
+                    <span class="fa-text">English</span>
+                    <span class="en-text">فارسی</span>
+                </button>
+
+                <div class="notification">
+                    <i class="far fa-bell"></i>
+                    <span class="badge">۳</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/100?img=12" alt="profile">
+                    <span class="fa-text">الکس مرگان</span>
+                    <span class="en-text">Alex Morgan</span>
+                    <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#aaa;"></i>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard">
+            <div class="welcome">
+                <h1 class="fa-text">خوش برگشتی، الکس</h1>
+                <h1 class="en-text">Welcome back, Alex</h1>
+                <p class="fa-text">خلاصه‌ای از وضعیت محتوای امروز.</p>
+                <p class="en-text">Here's what's happening with your content today.</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="fa-text">کل مقالات</span>
+                        <span class="en-text">Total Articles</span>
+                        <i class="fas fa-pen"></i>
+                    </div>
+                    <div class="kpi-value">۲,۸۴۵</div>
+                    <div class="kpi-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="fa-text">۱۲.۵٪+</span>
+                        <span class="en-text">+12.5%</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="fa-text">بازدید صفحات</span>
+                        <span class="en-text">Page Views</span>
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="kpi-value">۱۲۴.۵<span style="font-size:1rem;">هزار</span></div>
+                    <div class="kpi-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="fa-text">۸.۲٪+</span>
+                        <span class="en-text">+8.2%</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="fa-text">امتیاز سئو</span>
+                        <span class="en-text">SEO Score</span>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="kpi-value">۹۲<span style="font-size:1rem;">/۱۰۰</span></div>
+                    <div class="kpi-change negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span class="fa-text">۱.۱٪-</span>
+                        <span class="en-text">-1.1%</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="fa-text">فایل‌های رسانه</span>
+                        <span class="en-text">Media Files</span>
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="kpi-value">۶,۳۲۰</div>
+                    <div class="kpi-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="fa-text">۲۴.۳٪+</span>
+                        <span class="en-text">+24.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-bar"></i>
+                        <span class="fa-text">ترافیک ماهانه (نمودار طلایی)</span>
+                        <span class="en-text">Monthly Traffic (Golden Graph)</span>
+                    </div>
+                    <div class="graph-bars">
+                        <div class="bar" style="height: 70%;"><span class="fa-text">فروردین</span><span class="en-text">Jan</span></div>
+                        <div class="bar" style="height: 45%;"><span class="fa-text">اردیبهشت</span><span class="en-text">Feb</span></div>
+                        <div class="bar" style="height: 90%;"><span class="fa-text">خرداد</span><span class="en-text">Mar</span></div>
+                        <div class="bar" style="height: 65%;"><span class="fa-text">تیر</span><span class="en-text">Apr</span></div>
+                        <div class="bar" style="height: 80%;"><span class="fa-text">مرداد</span><span class="en-text">May</span></div>
+                        <div class="bar" style="height: 95%;"><span class="fa-text">شهریور</span><span class="en-text">Jun</span></div>
+                        <div class="bar" style="height: 55%;"><span class="fa-text">مهر</span><span class="en-text">Jul</span></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="fa-text">توزیع محتوا</span>
+                        <span class="en-text">Content Distribution</span>
+                    </div>
+                    <div class="donut-placeholder">
+                        <div class="donut">
+                            <div class="donut-inner">٪۷۲</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const html = document.documentElement;
+            
+            if (body.classList.contains('en')) {
+                // تغییر به فارسی
+                body.classList.remove('en');
+                html.setAttribute('lang', 'fa');
+                html.setAttribute('dir', 'rtl');
+                localStorage.setItem('lang', 'fa');
+                
+                // تغییر placeholder جستجو
+                updateSearchPlaceholder('fa');
+                // آپدیت عدد بج
+                document.querySelector('.badge').textContent = '۳';
+                // آپدیت عدد دونات
+                document.querySelector('.donut-inner').textContent = '٪۷۲';
+            } else {
+                // تغییر به انگلیسی
+                body.classList.add('en');
+                html.setAttribute('lang', 'en');
+                html.setAttribute('dir', 'ltr');
+                localStorage.setItem('lang', 'en');
+                
+                updateSearchPlaceholder('en');
+                document.querySelector('.badge').textContent = '3';
+                document.querySelector('.donut-inner').textContent = '72%';
+            }
+        }
+
+        function updateSearchPlaceholder(lang) {
+            const faInput = document.querySelector('.fa-placeholder');
+            const enInput = document.querySelector('.en-placeholder');
+            
+            if (lang === 'fa') {
+                faInput.style.display = 'flex';
+                enInput.style.display = 'none';
+            } else {
+                faInput.style.display = 'none';
+                enInput.style.display = 'flex';
+            }
+        }
+
+        // مقداردهی اولیه از localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('lang');
+            if (savedLang === 'en') {
+                document.body.classList.add('en');
+                document.documentElement.setAttribute('lang', 'en');
+                document.documentElement.setAttribute('dir', 'ltr');
+                updateSearchPlaceholder('en');
+                document.querySelector('.badge').textContent = '3';
+                document.querySelector('.donut-inner').textContent = '72%';
+            } else {
+                updateSearchPlaceholder('fa');
+            }
+        });
+    </script>
+
+</body>
+</html>

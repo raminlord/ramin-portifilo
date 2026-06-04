@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- متاتگ‌های سئو -->
+    <meta name="description" content="سامانه مدیریت محتوای طلایی (Golden CMS) - پلتفرم مدیریت محتوای پیشرفته و اختصاصی برای برندهای لوکس و محصولات لاکچری. طراحی و توسعه توسط رامین خوئی.">
+    <meta name="keywords" content="Golden CMS, سامانه مدیریت محتوا, برند لوکس, رامین خوئی, پلتفرم لاکچری, مدیریت محتوای طلایی, React, Next.js, Node.js">
+    <meta name="author" content="رامین خوئی">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Golden CMS | سامانه مدیریت محتوای طلایی | رامین خوئی">
+    <meta property="og:description" content="پلتفرم مدیریت محتوای پیشرفته و اختصاصی برای برندهای لوکس، با معماری میکروسرویس، امنیت چندلایه و پشتیبانی از چند زبان.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../images/golden-cms-og.jpg">
+    <meta property="og:locale" content="fa_IR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Golden CMS | سامانه مدیریت محتوای طلایی | رامین خوئی">
+    <meta name="twitter:description" content="پلتفرم مدیریت محتوای پیشرفته و اختصاصی برای برندهای لوکس.">
+    
+    <title>Golden CMS | سامانه مدیریت محتوای طلایی | رامین خوئی - طراح لوکس و فول استک</title>
+    
+    <!-- فونت Vazirmatn -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- استایل‌های پروژه -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/blog-post.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-dark: #B8960C;
+            --gold-light: #F5E6A3;
+            --gold-dimmer: rgba(212, 175, 55, 0.15);
+            --black: #0A0A0A;
+            --black-light: #111111;
+            --black-medium: #1A1A1A;
+            --black-card: #161616;
+            --white: #F5F5F5;
+            --gray: #888888;
+            --gray-light: #AAAAAA;
+            --border-color: #2A2A2A;
+            --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.25);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.9;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* ==================== لودر ==================== */
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .loader-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .golden-loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ==================== هدر ==================== */
+        .luxury-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            z-index: 1000;
+            padding: 0 2rem;
+            transition: var(--transition);
+        }
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 75px;
+        }
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--white);
+        }
+        .logo-first {
+            color: var(--white);
+        }
+        .logo-last {
+            color: var(--gold);
+        }
+        .logo-dot {
+            color: var(--gold);
+            font-size: 2.2rem;
+        }
+        .main-navigation .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 6px;
+            transition: var(--transition);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.35s ease;
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .toggle-line {
+            width: 28px;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        
+        /* ==================== محتوای اصلی ==================== */
+        .portfolio-single {
+            padding-top: 120px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            padding-bottom: 6rem;
+        }
+        
+        /* بردکرامپ */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            flex-wrap: wrap;
+        }
+        .breadcrumb a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .breadcrumb a:hover {
+            color: var(--gold);
+        }
+        .breadcrumb .separator {
+            color: var(--gold);
+            font-size: 0.7rem;
+        }
+        .breadcrumb .current {
+            color: var(--gold);
+        }
+        
+        /* هدر پروژه */
+        .project-header {
+            margin-bottom: 3rem;
+        }
+        .project-badge {
+            display: inline-block;
+            background: var(--gold-dimmer);
+            color: var(--gold);
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .project-header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .project-header h1 .golden-text {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .project-subtitle {
+            font-size: 1.15rem;
+            color: var(--gray-light);
+            max-width: 700px;
+        }
+        
+        /* اطلاعات سریع پروژه */
+        .project-quick-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--black-light);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        .quick-info-item {
+            text-align: center;
+        }
+        .quick-info-item .info-icon {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .quick-info-item .info-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.3rem;
+        }
+        .quick-info-item .info-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        
+        /* گالری تصاویر */
+        .project-gallery {
+            margin-bottom: 3.5rem;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .gallery-item:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.04);
+        }
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 1.2rem;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        /* توضیحات پروژه */
+        .project-description {
+            margin-bottom: 3.5rem;
+            background: var(--black-light);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+        .project-description p {
+            color: var(--gray-light);
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+        }
+        .project-description p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* ویژگی‌ها */
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 3.5rem;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            padding: 1.2rem;
+            background: var(--black-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+        .feature-item:hover {
+            border-color: var(--gold);
+        }
+        .feature-icon {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            color: var(--gray-light);
+            font-size: 0.95rem;
+        }
+        .feature-text strong {
+            color: var(--white);
+        }
+        
+        /* تکنولوژی‌ها */
+        .tech-section {
+            margin-bottom: 3.5rem;
+        }
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .tech-tag {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .tech-tag:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+        
+        /* چالش‌ها و نتایج */
+        .challenges-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+        .challenge-box,
+        .results-box {
+            background: var(--black-light);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        .challenge-box h3,
+        .results-box h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .challenge-box h3 i,
+        .results-box h3 i {
+            color: var(--gold);
+        }
+        .challenge-box ul,
+        .results-box ul {
+            list-style: none;
+            color: var(--gray-light);
+            font-size: 0.95rem;
+        }
+        .challenge-box ul li,
+        .results-box ul li {
+            margin-bottom: 0.7rem;
+            padding-right: 1.5rem;
+            position: relative;
+        }
+        .challenge-box ul li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--gold);
+        }
+        .results-box ul li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        .highlight-number {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        
+        /* دکمه‌های اقدام */
+        .cta-section {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        .btn-primary {
+            background: var(--gold);
+            color: var(--black);
+        }
+        .btn-primary:hover {
+            background: var(--gold-dark);
+            box-shadow: var(--shadow-gold);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        .btn-outline:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+        
+        /* نویگیشن بین پروژه‌ها */
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .nav-project {
+            text-decoration: none;
+            color: var(--gray-light);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        .nav-project:hover {
+            color: var(--gold);
+        }
+        .nav-project.prev i {
+            margin-left: 0.3rem;
+        }
+        .nav-project.next i {
+            margin-right: 0.3rem;
+        }
+        .nav-divider {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+        
+        /* فوتر */
+        .luxury-footer {
+            background: var(--black-light);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .luxury-footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        /* ==================== ریسپانسیو ==================== */
+        @media (max-width: 768px) {
+            .header-container {
+                height: 65px;
+            }
+            .main-navigation {
+                position: fixed;
+                top: 65px;
+                right: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(20px);
+                padding: 2rem;
+                transform: translateX(100%);
+                transition: var(--transition);
+                border-bottom: 1px solid var(--border-color);
+            }
+            .main-navigation.active {
+                transform: translateX(0);
+            }
+            .main-navigation .nav-list {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            .portfolio-single {
+                padding-top: 100px;
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+            }
+            .project-header h1 {
+                font-size: 2rem;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .challenges-results {
+                grid-template-columns: 1fr;
+            }
+            .project-quick-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .project-navigation {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .project-quick-info {
+                grid-template-columns: 1fr;
+            }
+            .cta-section {
+                flex-direction: column;
+            }
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- لودر -->
+    <div class="loader-container" id="loader">
+        <div class="golden-loader"></div>
+    </div>
+    
+    <!-- ==================== هدر ==================== -->
+    <header class="luxury-header">
+        <div class="header-container">
+            <a href="../index.html" class="logo-link">
+                <h1 class="logo-text">
+                    <span class="logo-first">Ramin</span>
+                    <span class="logo-last">Kh</span>
+                    <span class="logo-dot">.</span>
+                </h1>
+            </a>
+            
+            <nav class="main-navigation" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">خانه</a></li>
+                    <li><a href="../portfolio.html" class="nav-link active">نمونه کارها</a></li>
+                    <li><a href="../about.html" class="nav-link">درباره من</a></li>
+                    <li><a href="../services.html" class="nav-link">خدمات</a></li>
+                    <li><a href="../contact.html" class="nav-link">تماس</a></li>
+                </ul>
+            </nav>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="منوی موبایل">
+                <span class="toggle-line"></span>
+                <span class="toggle-line"></span>
+                <span class="toggle-line"></span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- ==================== محتوای اصلی ==================== -->
+    <main class="portfolio-single">
+        
+        <!-- بردکرامپ -->
+        <nav class="breadcrumb" aria-label="مسیر صفحه">
+            <a href="../index.html">خانه</a>
+            <span class="separator">/</span>
+            <a href="../portfolio.html">نمونه کارها</a>
+            <span class="separator">/</span>
+            <span class="current">Golden CMS</span>
+        </nav>
+        
+        <!-- هدر پروژه -->
+        <div class="project-header">
+            <span class="project-badge">پلتفرم مدیریت محتوای اختصاصی</span>
+            <h1>سامانه مدیریت محتوای <span class="golden-text">طلایی</span></h1>
+            <p class="project-subtitle">
+                یک پلتفرم پیشرفته و اختصاصی مدیریت محتوا که برای برندهای لوکس و محصولات لاکچری طراحی و پیاده‌سازی شده است. معماری میکروسرویس، امنیت چندلایه و پشتیبانی از چند زبان از ویژگی‌های برجسته این سامانه است.
+            </p>
+        </div>
+        
+        <!-- اطلاعات سریع پروژه -->
+        <div class="project-quick-info">
+            <div class="quick-info-item">
+                <div class="info-icon"><i class="fa-regular fa-clock"></i></div>
+                <div class="info-label">مدت زمان پروژه</div>
+                <div class="info-value">۶ ماه</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="info-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="info-label">تیم توسعه</div>
+                <div class="info-value">۴ نفر</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="info-icon"><i class="fa-solid fa-coins"></i></div>
+                <div class="info-label">بودجه</div>
+                <div class="info-value">۴۵,۰۰۰ دلار</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="info-icon"><i class="fa-solid fa-industry"></i></div>
+                <div class="info-label">صنعت</div>
+                <div class="info-value">برندهای لوکس</div>
+            </div>
+        </div>
+        
+        <!-- گالری تصاویر -->
+        <section class="project-gallery">
+            <h2 class="section-title">گالری تصاویر پروژه</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="../images/golden-cms-dashboard.jpg" alt="داشبورد مدیریت Golden CMS">
+                    <div class="gallery-overlay">داشبورد اختصاصی طلایی-مشکی</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../images/golden-cms-content.jpg" alt="ویرایشگر محتوا Golden CMS">
+                    <div class="gallery-overlay">ویرایشگر پیشرفته محتوا</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../images/golden-cms-analytics.jpg" alt="تحلیل و گزارش‌گیری Golden CMS">
+                    <div class="gallery-overlay">پنل تحلیل و گزارش‌گیری</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- توضیحات پروژه -->
+        <section class="project-description">
+            <h2 class="section-title">درباره پروژه</h2>
+            <p>
+                سامانه مدیریت محتوای طلایی (Golden CMS) یک پلتفرم کاملاً اختصاصی است که با هدف رفع نیازهای خاص برندهای لوکس و محصولات لاکچری طراحی و توسعه داده شده است. این سامانه با بهره‌گیری از معماری میکروسرویس، امکان مقیاس‌پذیری بالا و مدیریت همزمان هزاران کاربر فعال را فراهم می‌کند.
+            </p>
+            <p>
+                داشبورد مدیریت این سامانه با طراحی لوکس طلایی-مشکی و رابط کاربری intuitiveness، تجربه‌ای منحصربه‌فرد را برای مدیران محتوا به ارمغان می‌آورد. سیستم مدیریت کاربران با سطوح دسترسی مختلف، امنیت اطلاعات را در بالاترین سطح تضمین می‌کند.
+            </p>
+            <p>
+                یکی از نقاط قوت این پروژه، ماژول سئو پیشرفته اختصاصی آن است که به طور خاص برای نیازهای برندهای لوکس بهینه‌سازی شده و منجر به رشد ۲۵ درصدی ترافیک ارگانیک شده است. همچنین قابلیت پشتیبانی از چند زبان (فارسی، انگلیسی و عربی) این پلتفرم را برای بازارهای بین‌المللی آماده می‌سازد.
+            </p>
+        </section>
+        
+        <!-- ویژگی‌های کلیدی -->
+        <section class="key-features">
+            <h2 class="section-title">ویژگی‌های کلیدی</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-cubes"></i></span>
+                    <span class="feature-text"><strong>معماری میکروسرویس</strong> – مقیاس‌پذیری بالا و توسعه آسان</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                    <span class="feature-text"><strong>امنیت چندلایه</strong> – رمزنگاری اطلاعات و جلوگیری از حملات</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+                    <span class="feature-text"><strong>ماژول سئو پیشرفته</strong> – بهینه‌سازی اختصاصی برای برندهای لوکس</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-language"></i></span>
+                    <span class="feature-text"><strong>چند زبانه</strong> – پشتیبانی از فارسی، انگلیسی و عربی</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                    <span class="feature-text"><strong>بکاپ خودکار</strong> – سیستم پشتیبان‌گیری و بازیابی اطلاعات</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fa-solid fa-gauge-high"></i></span>
+                    <span class="feature-text"><strong>سرعت بالا</strong> – کاهش زمان بارگذاری به ۰.۸ ثانیه</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- تکنولوژی‌ها -->
+        <section class="tech-section">
+            <h2 class="section-title">تکنولوژی‌های استفاده شده</h2>
+            <div class="tech-tags">
+                <span class="tech-tag">React.js</span>
+                <span class="tech-tag">Next.js</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Express</span>
+                <span class="tech-tag">MongoDB</span>
+                <span class="tech-tag">Redis</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">Kubernetes</span>
+                <span class="tech-tag">AWS Cloud</span>
+                <span class="tech-tag">REST API</span>
+                <span class="tech-tag">JWT Auth</span>
+                <span class="tech-tag">SSL/TLS</span>
+            </div>
+        </section>
+        
+        <!-- چالش‌ها و نتایج -->
+        <div class="challenges-results">
+            <div class="challenge-box">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> چالش‌های حل شده</h3>
+                <ul>
+                    <li>کاهش زمان بارگذاری صفحات از ۳ ثانیه به <span class="highlight-number">۰.۸ ثانیه</span></li>
+                    <li>افزایش امنیت و جلوگیری از حملات سایبری</li>
+                    <li>مدیریت همزمان <span class="highlight-number">۱۰,۰۰۰</span> کاربر فعال</li>
+                    <li>پشتیبانی از چند زبان (فارسی، انگلیسی، عربی)</li>
+                </ul>
+            </div>
+            <div class="results-box">
+                <h3><i class="fa-solid fa-chart-line"></i> نتایج و دستاوردها</h3>
+                <ul>
+                    <li>افزایش <span class="highlight-number">۴۰٪</span> رضایت مشتریان از مدیریت محتوا</li>
+                    <li>کاهش <span class="highlight-number">۶۰٪</span> زمان انتشار محتوا</li>
+                    <li>رشد <span class="highlight-number">۲۵٪</span> ترافیک ارگانیک پس از پیاده‌سازی</li>
+                    <li>زمان آماده‌به‌کاری (Uptime) <span class="highlight-number">۹۹.۹٪</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- دکمه‌های ارتباط -->
+        <div class="cta-section">
+            <a href="../contact.html" class="btn btn-primary">
+                <i class="fa-solid fa-paper-plane"></i> درخواست پروژه مشابه
+            </a>
+            <a href="#" class="btn btn-outline">
+                <i class="fa-solid fa-play"></i> مشاهده دموی زنده
+            </a>
+            <a href="../portfolio.html" class="btn btn-outline">
+                <i class="fa-solid fa-arrow-right"></i> بازگشت به نمونه کارها
+            </a>
+        </div>
+        
+        <!-- نویگیشن بین پروژه‌ها -->
+        <div class="project-navigation">
+            <a href="#" class="nav-project prev">
+                <i class="fa-solid fa-chevron-right"></i>
+                <span>پروژه قبلی: پلتفرم تجارت الکترونیک لاکچری</span>
+            </a>
+            <span class="nav-divider">✦</span>
+            <a href="#" class="nav-project next">
+                <span>پروژه بعدی: اپلیکیشن موبایل طلا و جواهر</span>
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+        </div>
+        
+    </main>
+    
+    <!-- ==================== فوتر ==================== -->
+    <footer class="luxury-footer">
+        <p>© ۲۰۲۶ | طراحی و توسعه توسط <a href="../index.html">رامین خوئی</a> — طراح لوکس و فول استک</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">تمامی حقوق محفوظ است.</p>
+    </footer>
+    
+    <!-- ==================== اسکریپت‌ها ==================== -->
+    <!-- لودر -->
+    <script src="../js/loader.js"></script>
+    
+    <!-- اسکریپت اختصاصی -->
+    <script>
+        // منوی موبایل
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        if (mobileMenuToggle && mainNav) {
+            mobileMenuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // بستن منو با کلیک روی لینک‌ها
+            const navLinks = mainNav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                });
+            });
+        }
+        
+        // تغییر استایل هدر هنگام اسکرول
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.luxury-header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(10, 10, 10, 0.98)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.92)';
+            }
+        });
+        
+        // لودر (پشتیبان در صورت نبود فایل loader.js)
+        document.addEventListener('DOMContentLoaded', function() {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                setTimeout(function() {
+                    loader.classList.add('hidden');
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
