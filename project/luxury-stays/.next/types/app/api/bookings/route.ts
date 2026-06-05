@@ -1,4 +1,4 @@
-// File: /home/vll/Desktop/luxury-stays/src/app/api/bookings/route.ts
+// File: /home/vll/Desktop/portifilo raminkhoie/project/luxury-stays/src/app/api/bookings/route.ts
 import * as entry from '../../../../../src/app/api/bookings/route.js'
 import type { NextRequest } from 'next/server.js'
 

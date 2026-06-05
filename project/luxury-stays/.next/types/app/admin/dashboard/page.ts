@@ -1,4 +1,4 @@
-// File: /home/vll/Desktop/luxury-stays/src/app/admin/dashboard/page.tsx
+// File: /home/vll/Desktop/portifilo raminkhoie/project/luxury-stays/src/app/admin/dashboard/page.tsx
 import * as entry from '../../../../../src/app/admin/dashboard/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
