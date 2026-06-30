@@ -62,13 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     block: 'start'
                 });
                 
-                // آپدیت URL بدون ریلود صفحه
                 history.pushState(null, null, targetId);
             }
         });
     });
     
-    // ========== 3. REVEAL ANIMATIONS ON SCROLL (با Intersection Observer) ==========
+    // ========== 3. REVEAL ANIMATIONS ON SCROLL ==========
     const revealElements = document.querySelectorAll('.portfolio-card, .about-container, .contact-form, .brands-grid');
     
     const observerOptions = {
@@ -98,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
         revealObserver.observe(el);
     });
     
-    // انیمیشن جداگانه برای هر کارت نمونه کار
     const portfolioCards = document.querySelectorAll('.portfolio-card');
     portfolioCards.forEach((card, index) => {
         card.style.opacity = '0';
@@ -118,81 +116,135 @@ document.addEventListener('DOMContentLoaded', function() {
         cardObserver.observe(card);
     });
     
-    // ========== 4. FORM VALIDATION WITH LUXURY FEEDBACK ==========
+    // ========== 4. FORM VALIDATION WITH TELEGRAM INTEGRATION ==========
     const luxuryForm = document.getElementById('luxuryForm');
     if (luxuryForm) {
         luxuryForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const inputs = this.querySelectorAll('input, textarea');
-            let isValid = true;
-            let firstInvalid = null;
+            // گرفتن مقادیر
+            const name = document.getElementById('userName');
+            const phone = document.getElementById('userPhone');
+            const subject = document.getElementById('userSubject');
+            const message = document.getElementById('userMessage');
             
             // حذف خطاهای قبلی
             this.querySelectorAll('.error-message').forEach(err => err.remove());
-            inputs.forEach(input => {
-                input.style.borderColor = '';
-                input.classList.remove('error-shake');
+            [name, phone, subject, message].forEach(input => {
+                if (input) {
+                    input.style.borderColor = '';
+                    input.classList.remove('error-shake');
+                }
             });
             
-            // اعتبارسنجی
-            inputs.forEach(input => {
-                if (input.hasAttribute('required') && !input.value.trim()) {
+            let isValid = true;
+            let firstInvalid = null;
+            
+            // اعتبارسنجی نام
+            if (!name || !name.value.trim()) {
+                isValid = false;
+                showError(name, 'لطفاً نام و نام خانوادگی را وارد کنید');
+                if (!firstInvalid) firstInvalid = name;
+            }
+            
+            // اعتبارسنجی شماره موبایل
+            if (!phone || !phone.value.trim()) {
+                isValid = false;
+                showError(phone, 'لطفاً شماره موبایل را وارد کنید');
+                if (!firstInvalid) firstInvalid = phone;
+            } else {
+                // اعتبارسنجی فرمت شماره موبایل ایران
+                const phoneRegex = /^(\+98|0)?9\d{9}$/;
+                if (!phoneRegex.test(phone.value.trim().replace(/\s/g, ''))) {
                     isValid = false;
-                    input.style.borderColor = '#D4AF37';
-                    input.classList.add('error-shake');
-                    
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'error-message';
-                    errorDiv.style.cssText = 'color: #D4AF37; font-size: 0.75rem; margin-top: 5px;';
-                    errorDiv.textContent = 'این فیلد الزامی است';
-                    input.parentNode.insertBefore(errorDiv, input.nextSibling);
-                    
-                    if (!firstInvalid) firstInvalid = input;
+                    showError(phone, 'شماره موبایل معتبر وارد کنید (مثال: 09123456789)');
+                    if (!firstInvalid) firstInvalid = phone;
                 }
+            }
+            
+            // اعتبارسنجی پیام
+            if (!message || !message.value.trim()) {
+                isValid = false;
+                showError(message, 'لطفاً پیام خود را وارد کنید');
+                if (!firstInvalid) firstInvalid = message;
+            }
+            
+            // تابع نمایش خطا
+            function showError(input, errorText) {
+                if (!input) return;
+                input.style.borderColor = '#D4AF37';
+                input.classList.add('error-shake');
                 
-                // اعتبارسنجی ایمیل
-                if (input.type === 'email' && input.value.trim()) {
-                    const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-                    if (!emailRegex.test(input.value.trim())) {
-                        isValid = false;
-                        input.style.borderColor = '#D4AF37';
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'error-message';
-                        errorDiv.style.cssText = 'color: #D4AF37; font-size: 0.75rem; margin-top: 5px;';
-                        errorDiv.textContent = 'ایمیل معتبر وارد کنید';
-                        input.parentNode.insertBefore(errorDiv, input.nextSibling);
-                        if (!firstInvalid) firstInvalid = input;
-                    }
-                }
-            });
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.style.cssText = 'color: #D4AF37; font-size: 0.75rem; margin-top: 5px;';
+                errorDiv.textContent = errorText;
+                input.parentNode.insertBefore(errorDiv, input.nextSibling);
+            }
             
             if (isValid) {
-                // نمایش پیام موفقیت لوکس
-                const successMsg = document.createElement('div');
-                successMsg.textContent = '✅ درخواست شما با موفقیت ارسال شد. به زودی با شما تماس می‌گیریم.';
-                successMsg.style.cssText = `
-                    background: rgba(212, 175, 55, 0.15);
-                    border: 1px solid #D4AF37;
-                    color: #D4AF37;
-                    padding: 15px;
-                    border-radius: 15px;
-                    text-align: center;
-                    margin-top: 20px;
-                    font-weight: 500;
-                `;
-                luxuryForm.appendChild(successMsg);
-                luxuryForm.reset();
+                // ===== ارسال به تلگرام =====
+                const BOT_TOKEN = '7698268746:AAFKMPQgC0F29Rbc9ROMRob-MHsJKetec24'; // 🔑 اینجا توکن رو بذار
+                const CHAT_ID = '7569933499'; // 🔑 اینجا Chat ID رو بذار
                 
-                setTimeout(() => {
-                    successMsg.style.opacity = '0';
-                    setTimeout(() => successMsg.remove(), 500);
-                }, 4000);
+                const text = `📩 **پیام جدید از سایت شما:**
+
+👤 **نام:** ${name.value.trim()}
+📱 **شماره موبایل:** ${phone.value.trim()}
+📌 **موضوع:** ${subject ? subject.value.trim() || 'بدون موضوع' : 'بدون موضوع'}
+💬 **پیام:** ${message.value.trim()}`;
+                
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) {
+                        // نمایش پیام موفقیت لوکس
+                        const successMsg = document.createElement('div');
+                        successMsg.textContent = '✅ پیام شما با موفقیت ارسال شد. به زودی با شما تماس می‌گیریم.';
+                        successMsg.style.cssText = `
+                            background: rgba(212, 175, 55, 0.15);
+                            border: 1px solid #D4AF37;
+                            color: #D4AF37;
+                            padding: 15px;
+                            border-radius: 15px;
+                            text-align: center;
+                            margin-top: 20px;
+                            font-weight: 500;
+                        `;
+                        luxuryForm.appendChild(successMsg);
+                        luxuryForm.reset();
+                        
+                        setTimeout(() => {
+                            successMsg.style.opacity = '0';
+                            successMsg.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => successMsg.remove(), 500);
+                        }, 4000);
+                    } else {
+                        alert('❌ خطا در ارسال پیام. لطفاً دوباره تلاش کنید.');
+                        console.error('Telegram error:', data);
+                    }
+                })
+                .catch(err => {
+                    alert('❌ خطای شبکه. لطفاً اتصال اینترنت خود را بررسی کنید.');
+                    console.error('Network error:', err);
+                });
+                
             } else if (firstInvalid) {
                 firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 firstInvalid.focus();
                 
-                // اضافه کردن افکت شیک خطا
                 setTimeout(() => {
                     firstInvalid.classList.remove('error-shake');
                 }, 500);
@@ -211,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== 5. PARALLAX EFFECT FOR HERO (اختیاری لوکس) ==========
+    // ========== 5. PARALLAX EFFECT FOR HERO ==========
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
         const hero = document.querySelector('.hero');
@@ -220,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ========== 6. HEADER SHADOW ON SCROLL (برای حس لوکس) ==========
+    // ========== 6. HEADER SHADOW ON SCROLL ==========
     const heroSection = document.querySelector('.hero');
     if (heroSection) {
         window.addEventListener('scroll', () => {
@@ -232,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== 7. HOVER 3D EFFECT FOR CARDS (حرفه‌ای) ==========
+    // ========== 7. HOVER 3D EFFECT FOR CARDS ==========
     const cards = document.querySelectorAll('.portfolio-card');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -267,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
             75% { transform: translateX(5px); }
         }
         
-        /* اسکرول بار لوکس */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -285,17 +336,14 @@ document.addEventListener('DOMContentLoaded', function() {
             background: #F3E5AB;
         }
         
-        /* افکت گلد گلاس برای فرم */
         .contact-form {
             backdrop-filter: blur(2px);
         }
         
-        /* انیمیشن لوگو برندها */
         .brand-item {
             transition: all 0.3s ease;
         }
         
-        /* بهبود خوانایی لینک‌ها */
         a {
             -webkit-tap-highlight-color: transparent;
         }
@@ -309,8 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         footer.innerHTML = footer.innerHTML.replace('۲۰۲۶', currentYear);
     }
     
-    // ========== 10. PRELOADER SMOOTH APPEARANCE (اختیاری) ==========
-    // فقط یک افکت نرم برای نمایش محتوا
+    // ========== 10. PRELOADER SMOOTH APPEARANCE ==========
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease';
     window.addEventListener('load', () => {
@@ -318,18 +365,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// ========== CONSOLE MESSAGE LUXURY (برای کارفرماها) ==========
-console.log('%c✨ پرتفوی لوکس | طراحی شده برای برندهای برتر ✨', 'color: #D4AF37; font-size: 16px; font-weight: bold;');
-console.log('%cاین وب‌سایت با بالاترین استانداردهای UI/UX و کدنویسی تمیز توسعه یافته است.', 'color: #AAAAAA; font-size: 12px;');
 // ========== LOADER SPINNER ==========
 window.addEventListener('load', function() {
     const loader = document.getElementById('loader');
     if (loader) {
-        // حداقل 1.5 ثانیه لودر نمایش داده شود (برای تجربه لوکس)
         setTimeout(function() {
             loader.classList.add('hidden');
-            
-            // حذف کامل لودر از DOM بعد از انیمیشن
             setTimeout(function() {
                 loader.style.display = 'none';
             }, 500);
@@ -337,9 +378,10 @@ window.addEventListener('load', function() {
     }
 });
 
-// همچنین اگر صفحه خیلی سریع لود شد، باز هم لودر حداقل زمان مشخص را نشان می‌دهد
-// برای جلوگیری از پرش محتوا
 document.addEventListener('DOMContentLoaded', function() {
-    // اطمینان از اینکه body مخفی نباشد
     document.body.style.visibility = 'visible';
 });
+
+// ========== CONSOLE MESSAGE ==========
+console.log('%c✨ پرتفوی لوکس | طراحی شده برای برندهای برتر ✨', 'color: #D4AF37; font-size: 16px; font-weight: bold;');
+console.log('%cاین وب‌سایت با بالاترین استانداردهای UI/UX و کدنویسی تمیز توسعه یافته است.', 'color: #AAAAAA; font-size: 12px;');
