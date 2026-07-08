@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>کیس استادی سامانه رزرواسیون اقامتگاه‌های لوکس | طراحی فول‌استک</title>
+  <meta name="description" content="بررسی کامل پروژه رزرواسیون آنلاین اقامتگاه‌های لوکس با Next.js و Node.js. چالش‌ها، راه‌حل‌ها، ویژگی‌ها و نتایج را در این کیس استادی ببینید.">
+  <meta name="keywords" content="کیس استادی, رزرواسیون آنلاین, اقامتگاه لوکس, طراحی سایت, Next.js, Node.js, پنل مدیریت">
+  <link rel="canonical" href="https://luxury-villa-murex.vercel.app">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://luxury-villa-murex.vercel.app">
+  <meta property="og:title" content="کیس استادی سامانه رزرواسیون آنلاین اقامتگاه‌های لوکس">
+  <meta property="og:description" content="پلتفرم فول‌استک رزرو اقامتگاه با تجربه کاربری روان و پنل مدیریت پیشرفته. داستان کامل طراحی و توسعه.">
+  <meta property="og:image" content="https://luxury-villa-murex.vercel.app">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:site_name" content="پرتفولیوی من">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="کیس استادی سامانه رزرواسیون اقامتگاه‌های لوکس">
+  <meta name="twitter:description" content="طراحی و توسعه یک پلتفرم فول‌استک با معماری مدرن و رابط کاربری استثنایی.">
+  <meta name="twitter:image" content="https://luxury-villa-murex.vercel.app/luxury-booking-og.jpg">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "کیس استادی سامانه رزرواسیون آنلاین اقامتگاه‌های لوکس",
+    "description": "بررسی کامل پروژه رزرواسیون آنلاین اقامتگاه‌های لوکس با Next.js و Node.js.",
+    "author": {
+      "@type": "Person",
+      "name": "نام شما"
+    },
+    "datePublished": "2025-01-01",
+    "image": "https://luxury-villa-murex.vercel.app/luxury-booking-og.jpg",
+    "publisher": {
+      "@type": "Organization",
+      "name": "پرتفولیوی شما"
+    },
+    "about": {
+      "@type": "SoftwareApplication",
+      "name": "سامانه رزرواسیون اقامتگاه‌های لوکس",
+      "applicationCategory": "WebApplication",
+      "operatingSystem": "All"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts - Vazirmatn -->
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- AOS Animation Library (همون چیزی که قبلاً داشتی) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- بقیه استایل‌ها و اسکریپت‌ها در ادامه -->
+
+  <style>
+    /* RESET & BASE */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #0b0b0f;
+      color: #e0dcd3;
+      line-height: 1.7;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E0C878;
+      --dark: #0b0b0f;
+      --dark-card: #1a1a22;
+      --text: #e0dcd3;
+      --text-muted: #a09b91;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* TYPOGRAPHY */
+    h1, h2, h3 { font-weight: 900; color: #fff; }
+    h2 { font-size: 2.5rem; margin-bottom: 1.5rem; position: relative; display: inline-block; }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+    .gold-text { color: var(--gold); }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+      isolation: isolate;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(11,11,15,0.7) 0%, rgba(11,11,15,0.9) 100%);
+      z-index: -1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+    .hero h1 {
+      font-size: 3.8rem;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      animation: fadeUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .hero .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s 0.2s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .hero .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 1s 0.4s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: #0b0b0f;
+      box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(201,168,76,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+    }
+    .btn-outline:hover {
+      background: var(--gold);
+      color: #0b0b0f;
+      transform: translateY(-3px);
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-down {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      z-index: 5;
+      color: var(--gold);
+      cursor: pointer;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* SECTIONS GENERAL */
+    section {
+      padding: 100px 0;
+    }
+    .bg-dark-card {
+      background-color: var(--dark-card);
+    }
+
+    /* OVERVIEW GRID */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .overview-item {
+      background: rgba(26,26,34,0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .overview-item:hover { transform: translateY(-5px); }
+    .overview-item i { color: var(--gold); margin-bottom: 1rem; }
+    .overview-item h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .overview-item p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* CHALLENGE & SOLUTION 2-COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .two-col .text-content p {
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+    }
+    .image-frame {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      border: 1px solid rgba(201,168,76,0.2);
+      transition: transform 0.4s;
+    }
+    .image-frame:hover { transform: scale(1.02); }
+
+    /* FEATURES CARDS */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .feature-card {
+      background: var(--dark-card);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    .feature-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-8px);
+      box-shadow: 0 25px 40px -15px rgba(201,168,76,0.2);
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .feature-card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+    .feature-card p { color: var(--text-muted); }
+
+    /* TECH STACK */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+    .tech-item {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      color: var(--gold);
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .tech-item:hover { background: rgba(201,168,76,0.2); }
+
+    /* RESULTS COUNTER */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .result-card {
+      text-align: center;
+      background: var(--dark-card);
+      border-radius: 20px;
+      padding: 2.5rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .result-number {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      display: block;
+    }
+    .result-label { color: var(--text-muted); margin-top: 0.5rem; }
+
+    /* TESTIMONIAL */
+    .testimonial-card {
+      max-width: 700px;
+      margin: 3rem auto 0;
+      background: var(--dark-card);
+      border-radius: 24px;
+      padding: 3rem;
+      position: relative;
+      border: 1px solid rgba(201,168,76,0.2);
+      text-align: center;
+    }
+    .testimonial-card .quote-icon {
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+    .testimonial-card .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      margin: 0 auto 1.5rem;
+    }
+    .testimonial-card .text {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-card .author {
+      font-weight: 700;
+      color: #fff;
+    }
+    .testimonial-card .position {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* CTA BOTTOM */
+    .cta-section {
+      background: linear-gradient(135deg, #1a1a22 0%, #0b0b0f 100%);
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .cta-section h2 { font-size: 2.8rem; }
+    .cta-section .btn {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      padding: 16px 48px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #0b0b0f;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 2rem; }
+      .two-col { grid-template-columns: 1fr; gap: 2rem; }
+      .hero h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- هیرو -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>
+        <span class="gold-text">سامانه رزرواسیون</span><br>آنلاین اقامتگاه‌های لوکس
+      </h1>
+      <p class="subtitle">یک پلتفرم فول‌استک مدرن با تجربه کاربری استثنایی و پنل مدیریت هوشمند</p>
+      <div class="cta-group">
+        <a href="#overview" class="btn btn-primary">مشاهده کیس استادی</a>
+        <a href="https://external-domain.com/sample/luxury-booking" target="_blank" rel="noopener" class="btn btn-outline">مشاهده پروژه زنده ↗</a>
+      </div>
+    </div>
+    <div class="scroll-down" id="scrollDown">
+      <i data-lucide="chevron-down" style="width: 36px; height: 36px;"></i>
+    </div>
+  </section>
+
+  <!-- نمای کلی -->
+  <section id="overview" class="container" data-aos="fade-up">
+    <h2>نمای کلی پروژه</h2>
+    <div class="overview-grid">
+      <div class="overview-item">
+        <i data-lucide="building-2" style="width:36px;height:36px;"></i>
+        <h4>مشتری</h4>
+        <p>هتل‌های زنجیره‌ای رویال پالاس</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="user-check" style="width:36px;height:36px;"></i>
+        <h4>نقش من</h4>
+        <p>توسعه‌دهنده فول‌استک و طراح UI/UX</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="calendar" style="width:36px;height:36px;"></i>
+        <h4>مدت زمان</h4>
+        <p>۴ ماه (از ایده تا لانچ)</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="globe" style="width:36px;height:36px;"></i>
+        <h4>تکنولوژی اصلی</h4>
+        <p>Next.js، Node.js، PostgreSQL</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- چالش -->
+  <section class="bg-dark-card">
+    <div class="container" data-aos="fade-up">
+      <h2>چالش‌های اصلی</h2>
+      <div class="two-col">
+        <div class="text-content">
+          <p>سیستم رزرو قبلی مشتری یک راهکار وردپرسی کند و ناامن بود که نرخ تبدیل پایینی داشت. کاربران هنگام انتخاب تاریخ و فیلتر اقامتگاه با تأخیرهای آزاردهنده مواجه می‌شدند و فرایند پرداخت پیچیده بود.</p>
+          <p>از طرفی مدیریت اقامتگاه‌ها، تخفیف‌ها و تقویم شمسی برای پرسنل غیرفنی یک کابوس تمام‌عیار شده بود. هدف ما ساخت پلتفرمی یکپارچه با سرعت بالا و رابط کاربری فوق‌العاده روان بود.</p>
+        </div>
+        <div class="image-frame">
+          <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="چالش سیستم قبلی">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- راه‌حل -->
+  <section class="container" data-aos="fade-up">
+    <h2>راه‌حل طراحی‌شده</h2>
+    <div class="two-col">
+      <div class="image-frame">
+        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="راه‌حل مدرن">
+      </div>
+      <div class="text-content">
+        <p>ما یک معماری میکروسرویس سبک با فرانت‌اند Next.js و بک‌اند Node.js/Express طراحی کردیم. جست‌وجوی لحظه‌ای با Elasticsearch، پرداخت آنلاین با درگاه شاپرک و یک تقویم شمسی تعاملی پیاده‌سازی شد.</p>
+        <p>پنل مدیریت اختصاصی با قابلیت کشیدن و رها کردن (drag & drop) برای تنظیم قیمت‌ها، تخفیف‌های فصلی و گزارش‌گیری ساخته شد تا حتی کاربر غیرفنی هم به راحتی سیستم را مدیریت کند.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ویژگی‌های کلیدی -->
+  <section class="bg-dark-card">
+    <div class="container" data-aos="fade-up">
+      <h2>ویژگی‌های کلیدی</h2>
+      <div class="features-grid">
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+          <div class="feature-icon"><i data-lucide="search"></i></div>
+          <h3>جست‌وجوی هوشمند</h3>
+          <p>فیلتر بر اساس موقعیت مکانی، بازه قیمت، امکانات و تاریخ با سرعت زیر ۱۰۰ میلی‌ثانیه.</p>
+        </div>
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="feature-icon"><i data-lucide="calendar-check"></i></div>
+          <h3>رزرو آنی و تقویم شمسی</h3>
+          <p>انتخاب تاریخ با تقویم جلالی، نمایش لحظه‌ای موجودی و رزرو با ۳ کلیک.</p>
+        </div>
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="feature-icon"><i data-lucide="credit-card"></i></div>
+          <h3>پرداخت امن</h3>
+          <p>اتصال مستقیم به درگاه شاپرک و بازگشت خودکار تأییدیه رزرو.</p>
+        </div>
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+          <div class="feature-icon"><i data-lucide="layout-dashboard"></i></div>
+          <h3>پنل مدیریت پیشرفته</h3>
+          <p>مدیریت اقامتگاه، قیمت‌گذاری پویا، کوپن‌های تخفیف و گزارش‌های فروش.</p>
+        </div>
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="feature-icon"><i data-lucide="smartphone"></i></div>
+          <h3>واکنش‌گرا و PWA</h3>
+          <p>تجربه‌ی بی‌نقص در موبایل و تبلت، حتی به صورت آفلاین با قابلیت نصب.</p>
+        </div>
+        <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+          <h3>امنیت بالا</h3>
+          <p>احراز هویت JWT، رمزنگاری داده‌ها و محافظت در برابر حملات رایج وب.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- تکنولوژی‌ها -->
+  <section class="container" data-aos="fade-up">
+    <h2>تکنولوژی‌های استفاده شده</h2>
+    <div class="tech-stack">
+      <div class="tech-item"><i data-lucide="layers"></i> Next.js</div>
+      <div class="tech-item"><i data-lucide="server"></i> Node.js / Express</div>
+      <div class="tech-item"><i data-lucide="database"></i> PostgreSQL</div>
+      <div class="tech-item"><i data-lucide="search"></i> Elasticsearch</div>
+      <div class="tech-item"><i data-lucide="cloud"></i> AWS S3 + CloudFront</div>
+      <div class="tech-item"><i data-lucide="git-branch"></i> Git / CI-CD</div>
+      <div class="tech-item"><i data-lucide="figma"></i> Figma (UI Design)</div>
+      <div class="tech-item"><i data-lucide="bar-chart-3"></i> Chart.js (گزارشات)</div>
+    </div>
+  </section>
+
+  <!-- فرایند طراحی (اسلاید تصاویر) -->
+  <section class="bg-dark-card" data-aos="fade-up">
+    <div class="container">
+      <h2>فرایند طراحی و توسعه</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-top: 3rem;">
+        <div class="image-frame" style="position: relative;">
+          <img src="https://images.unsplash.com/photo-1581291518633-83b4eef920dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="وایرفریم‌ها">
+          <span style="position:absolute; bottom:10px; left:20px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; font-size:0.9rem;">وایرفریم اولیه</span>
+        </div>
+        <div class="image-frame">
+          <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="طراحی UI">
+          <span style="position:absolute; bottom:10px; left:20px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; font-size:0.9rem;">طراحی Hi-Fi در Figma</span>
+        </div>
+        <div class="image-frame">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="توسعه و کدنویسی">
+          <span style="position:absolute; bottom:10px; left:20px; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; font-size:0.9rem;">توسعه فرانت‌اند</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- نتایج -->
+  <section class="container" data-aos="fade-up">
+    <h2>نتایج و تأثیر</h2>
+    <div class="results-grid">
+      <div class="result-card">
+        <span class="result-number" id="counter1">0</span>
+        <span class="result-label">درصد افزایش رزرو</span>
+      </div>
+      <div class="result-card">
+        <span class="result-number" id="counter2">0</span>
+        <span class="result-label">رضایت کاربران</span>
+      </div>
+      <div class="result-card">
+        <span class="result-number" id="counter3">0</span>
+        <span class="result-label">کاهش زمان مدیریت</span>
+      </div>
+      <div class="result-card">
+        <span class="result-number" id="counter4">0</span>
+        <span class="result-label">درصد افزایش سرعت</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- نقل قول مشتری -->
+  <section class="bg-dark-card" data-aos="fade-up">
+    <div class="container">
+      <div class="testimonial-card">
+        <div class="quote-icon"><i data-lucide="quote"></i></div>
+        <img class="avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="مدیر هتل">
+        <p class="text">"این پلتفرم نه‌تنها فروش آنلاین ما را متحول کرد، بلکه تیم ما بالاخره می‌تواند بدون استرس اقامتگاه‌ها را مدیریت کند. طراحی فوق‌العاده و پشتیبانی بی‌نظیر!"</p>
+        <p class="author">سارا محمدی</p>
+        <p class="position">مدیر بازاریابی هتل‌های رویال پالاس</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA نهایی -->
+  <section class="cta-section" data-aos="fade-up">
+    <h2>همین الان پروژه را ببینید</h2>
+    <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto;">نسخه زنده این سامانه را بررسی کنید و تجربه کاربری واقعی را لمس کنید.</p>
+    <a href="https://luxury-villa-murex.vercel.app/" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 1.2rem;">
+      <i data-lucide="external-link" style="width:20px;height:20px;"></i> مشاهده پروژه زنده
+    </a>
+  </section>
+
+  <footer>
+    <p>© ۱۴۰۴ — کیس‌استادی سامانه رزرواسیون لوکس | طراحی و توسعه توسط شما</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Init AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false
+    });
+
+    // Init Lucide icons
+    lucide.createIcons();
+
+    // Scroll down hero
+    document.getElementById('scrollDown').addEventListener('click', () => {
+      document.getElementById('overview').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Counter animation when visible
+    const counters = [
+      { id: 'counter1', value: 42, suffix: '%' },
+      { id: 'counter2', value: 96, suffix: '%' },
+      { id: 'counter3', value: 65, suffix: '%' },
+      { id: 'counter4', value: 78, suffix: '%' }
+    ];
+
+    function animateCounter(element, target, suffix) {
+      let count = 0;
+      const speed = target / 50;
+      const updateCounter = () => {
+        count += speed;
+        if (count < target) {
+          element.innerText = Math.ceil(count) + suffix;
+          requestAnimationFrame(updateCounter);
+        } else {
+          element.innerText = target + suffix;
+        }
+      };
+      updateCounter();
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          counters.forEach(c => {
+            const el = document.getElementById(c.id);
+            if (el && el.innerText === '0' + c.suffix) { // avoid re-trigger
+              animateCounter(el, c.value, c.suffix);
+            }
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const resultsSection = document.querySelector('.results-grid');
+    if (resultsSection) observer.observe(resultsSection);
+  </script>
+</body>
+</html>

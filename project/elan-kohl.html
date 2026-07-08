@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>کیس استادی ÉLAN VOGUE | گالری مد و لباس لوکس با انیمیشن‌های تعاملی</title>
+  <meta name="description" content="نمونه کار طراحی وب‌سایت ÉLAN VOGUE، گالری مد لوکس با اسلایدر فول‌اسکرین، ذرات طلایی زنده و گالری فیلترشونده. تکنولوژی‌ها و چالش‌ها.">
+  <meta name="keywords" content="کیس استادی, ÉLAN VOGUE, گالری مد, طراحی لوکس, اسلایدر فول‌اسکرین, ذرات طلایی, انیمیشن, Canvas">
+  <link rel="canonical" href="https://elan-kohl-iota.vercel.app/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://elan-kohl-iota.vercel.app/">
+  <meta property="og:title" content="کیس استادی ÉLAN VOGUE | گالری مد لوکس">
+  <meta property="og:description" content="وب‌سایتی با اسلایدر تمام‌صفحه، ذرات طلایی واکنش‌گرا و لایت‌باکس اختصاصی برای برند مد.">
+  <meta property="og:image" content="https://elan-kohl-iota.vercel.app/">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:site_name" content="پرتفولیوی من">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="کیس استادی ÉLAN VOGUE | گالری مد لوکس">
+  <meta name="twitter:description" content="تجربه‌ای بی‌نظیر از طراحی وب با ذرات طلایی زنده و گالری فیلترشونده.">
+  <meta name="twitter:image" content="https://elan-kohl-iota.vercel.app/elan-vogue-og.jpg">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "کیس استادی ÉLAN VOGUE | گالری مد و لباس لوکس",
+    "description": "طراحی یک وب‌سایت گالری مد با اسلایدر فول‌اسکرین، ذرات طلایی زنده و رابط کاربری فوق‌لوکس.",
+    "author": { "@type": "Person", "name": "نام شما" },
+    "datePublished": "2025-02-01",
+    "image": "https://elan-kohl-iota.vercel.app/elan-vogue-og.jpg",
+    "publisher": { "@type": "Organization", "name": "پرتفولیوی شما" },
+    "about": {
+      "@type": "WebSite",
+      "name": "ÉLAN VOGUE",
+      "url": "https://elan-kohl-iota.vercel.app/"
+    }
+  }
+  </script>
+
+  <!-- Vazirmatn Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: #0a0a0a;
+      color: #e6e4e0;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #F5E7B3;
+      --dark: #0a0a0a;
+      --card-bg: #141414;
+      --text: #e6e4e0;
+      --muted: #8a8780;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; display:block; }
+    .container { width:90%; max-width:1200px; margin:0 auto; }
+    
+    h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--gold);
+    }
+    .gold-text { color: var(--gold); }
+
+    /* CANVAS PARTICLES */
+    #particleCanvas {
+      position: fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* HERO SLIDER */
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .slide {
+      position: absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+    }
+    .slide.active { opacity: 1; }
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset:0;
+      background: linear-gradient(0deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 50%, rgba(10,10,10,0.7) 100%);
+      z-index: 0;
+    }
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      max-width: 700px;
+      padding: 0 20px;
+      transform: translateY(30px);
+      opacity: 0;
+      animation: fadeInUp 1.2s forwards;
+    }
+    .slide.active .slide-content {
+      animation: fadeInUp 1.2s forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity:1; transform: translateY(0); }
+    }
+    .slide-content h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 1.5rem;
+    }
+    .slide-content p {
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 38px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: #0a0a0a;
+      box-shadow: 0 10px 30px rgba(212,175,55,0.3);
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(212,175,55,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      margin-right: 15px;
+    }
+    .btn-outline:hover {
+      background: var(--gold);
+      color: #0a0a0a;
+    }
+    .slider-dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 5;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dot.active { background: var(--gold); }
+
+    /* SECTIONS */
+    section { padding: 100px 0; }
+    .bg-dark-card { background: var(--card-bg); }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+    .text-col p { color: var(--muted); margin-bottom: 1.5rem; }
+    .img-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.6);
+      border: 1px solid rgba(212,175,55,0.15);
+    }
+
+    /* FILTERABLE GALLERY DEMO */
+    .gallery-filters {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #ccc;
+      padding: 10px 28px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--gold);
+      color: #0a0a0a;
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s, box-shadow 0.4s;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 25px 45px rgba(212,175,55,0.25);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-item .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 20px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border: 2px solid rgba(212,175,55,0.3);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 3rem;
+      color: var(--gold);
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    /* FEATURES CARDS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .card {
+      background: rgba(20,20,20,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212,175,55,0.1);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: all 0.4s;
+    }
+    .card:hover {
+      border-color: var(--gold);
+      transform: translateY(-10px);
+      box-shadow: 0 25px 35px -12px rgba(212,175,55,0.25);
+    }
+    .card-icon {
+      font-size: 2.8rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .card h3 { color: #fff; margin-bottom: 1rem; font-size: 1.5rem; }
+
+    /* TECH */
+    .tech-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .tech-tag {
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.3);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--gold);
+      transition: 0.3s;
+    }
+    .tech-tag:hover { background: var(--gold); color: #000; }
+
+    /* TESTIMONIAL */
+    .testimonial {
+      max-width: 700px;
+      margin: 3rem auto 0;
+      background: var(--card-bg);
+      border-radius: 30px;
+      padding: 3rem;
+      border: 1px solid rgba(212,175,55,0.2);
+      text-align: center;
+      position: relative;
+    }
+    .testimonial .quote {
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.2;
+    }
+    .testimonial p.text {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+    }
+    .avatar-test {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      margin: 1rem auto;
+    }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, #141414 0%, #0a0a0a 100%);
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .cta h2 { font-size: 2.5rem; }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      background: #0a0a0a;
+      color: var(--muted);
+      border-top: 1px solid #222;
+    }
+
+    @media (max-width: 768px) {
+      h2 { font-size: 2rem; }
+      .grid-2col { grid-template-columns: 1fr; gap: 2rem; }
+      .slide-content h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ذرات طلایی زنده -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- اسلایدر هیرو -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="slides">
+      <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="slide-content">
+          <h1>ÉLAN <span class="gold-text">VOGUE</span></h1>
+          <p>گالری مد و لباس لوکس | تجربه‌ای بی‌نظیر از هنر و فشن</p>
+          <a href="#overview" class="btn btn-gold">شروع کیس استادی</a>
+          <a href="https://external-domain.com/sample/elanvogue" target="_blank" rel="noopener" class="btn btn-outline">مشاهده پروژه زنده</a>
+        </div>
+      </div>
+      <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="slide-content">
+          <h1>ظرافت در <span class="gold-text">حرکت</span></h1>
+          <p>انیمیشن‌های روان و ذرات طلایی تعاملی</p>
+          <a href="#features" class="btn btn-gold">ویژگی‌ها</a>
+        </div>
+      </div>
+      <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="slide-content">
+          <h1>قدرت <span class="gold-text">طراحی</span></h1>
+          <p>گالری فیلترشونده و لایت‌باکس اختصاصی</p>
+          <a href="#gallery" class="btn btn-gold">مشاهده گالری</a>
+        </div>
+      </div>
+    </div>
+    <div class="slider-dots">
+      <span class="dot active" data-slide="0"></span>
+      <span class="dot" data-slide="1"></span>
+      <span class="dot" data-slide="2"></span>
+    </div>
+  </div>
+
+  <!-- نمای کلی -->
+  <section id="overview" class="container">
+    <h2>نمای کلی پروژه</h2>
+    <div class="grid-2col">
+      <div class="text-col">
+        <p>برند ÉLAN VOGUE، یک خانه مد لوکس، به دنبال ویترینی دیجیتال بود که شکوه و ظرافت کلکسیون‌هایش را در فضای آنلاین منعکس کند. نیاز اصلی یک تجربه کاربری فراگیر با المان‌های بصری خیره‌کننده بود.</p>
+        <p>ما یک وب‌اپلیکیشن تک‌صفحه‌ای با اسلایدر فول‌اسکرین، ذرات طلایی زنده که به حرکت موس واکنش نشان می‌دهند، گالری با فیلترهای هوشمند و لایت‌باکسی طراحی کردیم که بازدیدکننده را مسحور خود می‌کند.</p>
+      </div>
+      <div class="img-frame">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="ÉLAN VOGUE mockup">
+      </div>
+    </div>
+  </section>
+
+  <!-- چالش -->
+  <section class="bg-dark-card">
+    <div class="container">
+      <h2>چالش‌ها</h2>
+      <div class="grid-2col">
+        <div class="img-frame">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="چالش طراحی">
+        </div>
+        <div class="text-col">
+          <p>وب‌سایت قبلی استاتیک و قدیمی بود، هیچ تعاملی با کاربر نداشت و تصاویر با کیفیت بالا به کندی بارگذاری می‌شدند. نرخ پرش بالا و نرخ تبدیل نزدیک به صفر بود.</p>
+          <p>همچنین، مشتری می‌خواست نمایش کلکسیون‌ها به صورت دسته‌بندی‌شده (زنانه، مردانه، اکسسوری) با قابلیت بزرگنمایی تصاویر و بدون لگ باشد. چالش فنی ترکیب زیبایی بصری و عملکرد بی‌نقص بود.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- راه‌حل -->
+  <section class="container">
+    <h2>راه‌حل خلاقانه</h2>
+    <div class="grid-2col">
+      <div class="text-col">
+        <p>ما با استفاده از Canvas و JavaScript، سیستمی از ذرات طلایی ساختیم که به طور زنده در پس‌زمینه شناورند و با موقعیت موس واکنش نشان می‌دهند. اسلایدر تمام‌صفحه با CSS transitions و مدیریت لمسی روان پیاده‌سازی شد.</p>
+        <p>گالری تصاویر با Vanilla JS و فیلترهای CSS نوشته شد تا وابستگی به کتابخانه‌های سنگین نداشته باشد. لایت‌باکس اختصاصی امکان بزرگنمایی با حرکت روان را فراهم کرد. تمام تصاویر به صورت lazy loading و بهینه‌شده برای WebP بارگذاری می‌شوند.</p>
+      </div>
+      <div class="img-frame">
+        <img src="https://images.unsplash.com/photo-1470309864661-68328b2cd0a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="راه‌حل">
+      </div>
+    </div>
+  </section>
+
+  <!-- گالری فیلترشونده (دمو) -->
+  <section class="bg-dark-card" id="gallery">
+    <div class="container">
+      <h2>گالری فیلترشونده ✦</h2>
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">همه</button>
+        <button class="filter-btn" data-filter="women">زنانه</button>
+        <button class="filter-btn" data-filter="men">مردانه</button>
+        <button class="filter-btn" data-filter="accessories">اکسسوری</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- items injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- لایت‌باکس -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img src="" alt="lightbox image" id="lightboxImg">
+  </div>
+
+  <!-- ویژگی‌ها -->
+  <section class="container" id="features">
+    <h2>ویژگی‌های شاخص</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon"><i data-lucide="sparkles"></i></div>
+        <h3>ذرات طلایی زنده</h3>
+        <p>موشن گرافیک پویا با Canvas که به حرکت موس واکنش نشان می‌دهد.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i data-lucide="image"></i></div>
+        <h3>اسلایدر فول‌اسکرین</h3>
+        <p>انتقال نرم بین تصاویر با کنترل لمسی و کیبورد.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i data-lucide="filter"></i></div>
+        <h3>گالری هوشمند</h3>
+        <p>فیلتر لحظه‌ای بر اساس دسته‌بندی با انیمیشن‌های محو.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i data-lucide="zoom-in"></i></div>
+        <h3>لایت‌باکس اختصاصی</h3>
+        <p>بزرگنمایی تصاویر با کیفیت بالا و خروج آسان.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i data-lucide="smartphone"></i></div>
+        <h3>تجربه موبایل بی‌نقص</h3>
+        <p>طراحی واکنش‌گرا و لمسی برای تمام دستگاه‌ها.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i data-lucide="zap"></i></div>
+        <h3>سرعت بارگذاری بالا</h3>
+        <p>Lazy loading، WebP و CDN برای عملکردی برق‌آسا.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- تکنولوژی‌ها -->
+  <section class="bg-dark-card">
+    <div class="container">
+      <h2>تکنولوژی‌های به کار رفته</h2>
+      <div class="tech-cloud">
+        <span class="tech-tag">HTML5 Canvas</span>
+        <span class="tech-tag">CSS3 Transitions</span>
+        <span class="tech-tag">Vanilla JavaScript</span>
+        <span class="tech-tag">Lazy Loading</span>
+        <span class="tech-tag">Responsive Design</span>
+        <span class="tech-tag">WebP / AVIF</span>
+        <span class="tech-tag">Git / CI-CD</span>
+        <span class="tech-tag">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- نقل قول -->
+  <section class="container">
+    <div class="testimonial">
+      <div class="quote">“</div>
+      <p class="text">"وب‌سایت جدید فراتر از انتظار ما بود. ذرات طلایی و اسلایدر تمام‌صفحه حس و حالی از لاکچری بودن واقعی به برند ما بخشید. نرخ تعامل کاربران ۷۰٪ افزایش پیدا کرد."</p>
+      <img class="avatar-test" src="https://randomuser.me/api/portraits/men/32.jpg" alt="مدیر برند">
+      <p style="font-weight:700; color:#fff;">امیررضا کیانی</p>
+      <p style="color:var(--muted);">مدیر خلاقیت ÉLAN VOGUE</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>پروژه را زنده ببینید</h2>
+    <p style="color:var(--muted); max-width:600px; margin:1rem auto;">وارد دنیای ÉLAN VOGUE شوید و قدرت طراحی تعاملی را لمس کنید.</p>
+    <a href="https://elan-kohl-iota.vercel.app/" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:1.1rem; padding:16px 50px;">مشاهده وب‌سایت</a>
+  </section>
+
+  <footer>© ۱۴۰۴ — کیس‌استادی ÉLAN VOGUE | طراحی و توسعه توسط شما</footer>
+
+  <script>
+    // ========== PARTICLES ==========
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    const mouse = { x: null, y: null, radius: 100 };
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() * 0.6) - 0.3;
+        this.speedY = (Math.random() * 0.6) - 0.3;
+        this.color = `rgba(212, 175, 55, ${Math.random() * 0.4 + 0.15})`;
+      }
+      update() {
+        // Mouse interaction
+        if (mouse.x && mouse.y) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx*dx + dy*dy);
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x -= dx * force * 0.02;
+            this.y -= dy * force * 0.02;
+          }
+        }
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > width) this.speedX *= -1;
+        if (this.y < 0 || this.y > height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initParticles();
+    }
+    function initParticles() {
+      particles = [];
+      const num = Math.floor((width * height) / 9000);
+      for (let i=0; i<num; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+      ctx.clearRect(0,0,width,height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    resizeCanvas();
+    animateParticles();
+
+    // ========== HERO SLIDER ==========
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    const slideInterval = 5000;
+
+    function showSlide(index) {
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+      currentSlide = index;
+    }
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        showSlide(parseInt(dot.dataset.slide));
+        resetInterval();
+      });
+    });
+    function nextSlide() {
+      let next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }
+    let autoPlay = setInterval(nextSlide, slideInterval);
+    function resetInterval() {
+      clearInterval(autoPlay);
+      autoPlay = setInterval(nextSlide, slideInterval);
+    }
+    // touch support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+      if (!touchStartX) return;
+      let diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < -30) nextSlide();
+        else if (diff > 30) showSlide((currentSlide - 1 + slides.length) % slides.length);
+        resetInterval();
+      }
+    });
+
+    // ========== FILTERABLE GALLERY (demo images) ==========
+    const galleryItems = [
+      { src: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'women', title: 'لباس شب' },
+      { src: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'women', title: 'کت و شلوار زنانه' },
+      { src: 'https://images.unsplash.com/photo-1503342217505-b0a15e3268c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'men', title: 'کت چرم' },
+      { src: 'https://images.unsplash.com/photo-1490367532201-b9bc1dc483f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'men', title: 'پیراهن رسمی' },
+      { src: 'https://images.unsplash.com/photo-1601924638867-3a6de6b7a500?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'accessories', title: 'کیف دستی' },
+      { src: 'https://images.unsplash.com/photo-1589156191611-9a3b9e79a5f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'accessories', title: 'ساعت لوکس' },
+      { src: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'women', title: 'شومیز ابریشمی' },
+      { src: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', cat: 'men', title: 'کت تک' }
+    ];
+
+    const galleryGrid = document.getElementById('galleryGrid');
+    function renderGallery(filter = 'all') {
+      galleryGrid.innerHTML = '';
+      const filtered = filter === 'all' ? galleryItems : galleryItems.filter(item => item.cat === filter);
+      filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.innerHTML = `<img src="${item.src}" loading="lazy" alt="${item.title}"><div class="caption">${item.title}</div>`;
+        div.addEventListener('click', () => openLightbox(item.src));
+        galleryGrid.appendChild(div);
+      });
+    }
+    renderGallery();
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        renderGallery(filter);
+      });
+    });
+
+    // LIGHTBOX
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+    function openLightbox(src) {
+      lightbox.classList.add('active');
+      lightboxImg.src = src;
+    }
+    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.classList.remove('active');
+    });
+
+    // Init Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

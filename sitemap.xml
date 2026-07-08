@@ -6,39 +6,32 @@
 
     <!-- صفحه اصلی -->
     <url>
-        <loc>https://www.raminkhoie.ir/</loc>
+        <loc>https://www.ramindev.digital/</loc>
         <lastmod>2025-01-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
-    <!-- صفحات ثابت با استفاده از anchor links -->
+    <!-- صفحات پروژه (نمونه کارها) -->
     <url>
-        <loc>https://www.raminkhoie.ir/#portfolio</loc>
-        <lastmod>2025-01-15</lastmod>
+        <loc>https://www.ramindev.digital/project/luxary-villa.html</loc>
+        <lastmod>2026-07-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://www.raminkhoie.ir/#blog</loc>
-        <lastmod>2025-01-15</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
+        <loc>https://www.ramindev.digital/project/elan-kohl.html</loc>
+        <lastmod>2026-07-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://www.raminkhoie.ir/#about</loc>
-        <lastmod>2025-01-15</lastmod>
+        <loc>https://www.ramindev.digital/project/nano-gene.html</loc>
+        <lastmod>2026-07-08</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <url>
-        <loc>https://www.raminkhoie.ir/#contact</loc>
-        <lastmod>2025-01-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
     </url>
 
 </urlset>

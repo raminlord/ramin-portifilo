@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>کیس استادی نانوژن | وب‌سایت آزمایشگاهی با طراحی شیشه‌ای و انیمیشن سه‌بعدی</title>
+  <meta name="description" content="مطالعه کامل پروژه وب‌سایت نانوژن: طراحی Glassmorphism، انیمیشن‌های مولکولی Three.js و ذرات درخشان. چالش‌ها و تکنولوژی‌های استفاده شده.">
+  <meta name="keywords" content="کیس استادی, نانوژن, وب‌سایت آزمایشگاهی, Glassmorphism, Three.js, انیمیشن مولکولی, طراحی مدرن">
+  <link rel="canonical" href="https://nano-gene-six.vercel.app/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://nano-gene-six.vercel.app/">
+  <meta property="og:title" content="کیس استادی نانوژن | وب‌سایت آزمایشگاهی مدرن">
+  <meta property="og:description" content="رابط کاربری شیشه‌ای با انیمیشن‌های مولکولی سه‌بعدی. داستان طراحی وب‌سایت علمی نانوژن.">
+  <meta property="og:image" content="https://yourdomain.com/images/nanogen-og.jpg">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:site_name" content="پرتفولیوی من">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="کیس استادی نانوژن | وب‌سایت آزمایشگاهی">
+  <meta name="twitter:description" content="Glassmorphism و WebGL در خدمت یک وب‌سایت علمی. مشاهده جزئیات پروژه.">
+  <meta name="twitter:image" content="https://nano-gene-six.vercel.app/nanogen-og.jpg">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "کیس استادی نانوژن | وب‌سایت آزمایشگاهی با رابط شیشه‌ای",
+    "description": "طراحی و توسعه وب‌سایت نانوژن با استفاده از Three.js و Glassmorphism برای تجربه‌ای علمی و مدرن.",
+    "author": { "@type": "Person", "name": "نام شما" },
+    "datePublished": "2025-03-01",
+    "image": "https://nano-gene-six.vercel.app/nanogen-og.jpg",
+    "publisher": { "@type": "Organization", "name": "پرتفولیوی شما" },
+    "about": {
+      "@type": "WebSite",
+      "name": "نانوژن",
+      "url": "https://nano-gene-six.vercel.app/"
+    }
+  }
+  </script>
+
+  <!-- Vazirmatn Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: #010a17;
+      color: #d0e0ff;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    :root {
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.4);
+      --glass-bg: rgba(10, 25, 47, 0.45);
+      --glass-border: rgba(0, 229, 255, 0.2);
+      --text: #d0e0ff;
+      --muted: #8ba4c7;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; display:block; }
+    .container { width:90%; max-width:1200px; margin:0 auto; }
+
+    /* GLASSMORPHISM CARD BASE */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px rgba(0,229,255,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,229,255,0.15);
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      background: linear-gradient(135deg, #fff, #b0d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .cyan-text { color: var(--cyan); }
+
+    /* 3D CANVAS */
+    #molecularCanvas {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      z-index: -2;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+    .hero .glass-card {
+      padding: 4rem 3rem;
+      max-width: 700px;
+      text-align: center;
+      animation: floatUp 1s ease-out;
+    }
+    @keyframes floatUp {
+      from { opacity:0; transform: translateY(40px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff, #00e5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 1.3rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block;
+      padding: 14px 38px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      margin: 0 8px;
+    }
+    .btn-cyan {
+      background: var(--cyan);
+      color: #010a17;
+      box-shadow: 0 0 25px var(--cyan-glow);
+    }
+    .btn-cyan:hover { box-shadow: 0 0 45px var(--cyan); transform: translateY(-3px); }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      backdrop-filter: blur(5px);
+    }
+    .btn-outline:hover { background: var(--cyan); color: #010a17; }
+
+    /* SECTIONS SPACING */
+    section { padding: 100px 0; position: relative; z-index: 1; }
+
+    /* OVERVIEW GRID */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .overview-item {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(10, 25, 47, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(0,229,255,0.15);
+    }
+    .overview-item i { color: var(--cyan); margin-bottom: 1rem; }
+    .overview-item h4 { color: #fff; margin-bottom: 0.3rem; }
+    .overview-item p { color: var(--muted); font-size: 0.95rem; }
+
+    /* TWO COLUMN LAYOUT */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .two-col p { color: var(--muted); margin-bottom: 1.2rem; }
+    .img-frame {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+      border: 1px solid rgba(0,229,255,0.2);
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--cyan);
+      margin-bottom: 1.5rem;
+    }
+    .glass-card h3 { color: #fff; margin-bottom: 1rem; font-size: 1.4rem; }
+
+    /* TECH CLOUD */
+    .tech-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .tech-tag {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: var(--cyan);
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+    }
+    .tech-tag:hover { background: var(--cyan); color: #000; }
+
+    /* TESTIMONIAL */
+    .testimonial-card {
+      max-width: 680px;
+      margin: 3rem auto 0;
+      text-align: center;
+    }
+    .testimonial-card .quote-icon {
+      font-size: 3.5rem;
+      color: var(--cyan);
+      opacity: 0.3;
+    }
+    .testimonial-card p.text {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+    }
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--cyan);
+      margin: 1rem auto;
+      display: block;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: rgba(1, 10, 23, 0.7);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .cta-section h2 { font-size: 2.5rem; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #010a17;
+      color: var(--muted);
+      border-top: 1px solid rgba(0,229,255,0.15);
+    }
+
+    @media (max-width: 768px) {
+      h2 { font-size: 2rem; }
+      .two-col { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- پس‌زمینه سه‌بعدی مولکولی -->
+  <canvas id="molecularCanvas"></canvas>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glass-card">
+      <h1>نانوژن <span class="cyan-text">✦</span></h1>
+      <p>وب‌سایت آزمایشگاهی مدرن با رابط شیشه‌ای و انیمیشن‌های مولکولی سه‌بعدی</p>
+      <div>
+        <a href="#overview" class="btn btn-cyan">کیس استادی</a>
+        <a href="https://external-domain.com/sample/nanogen" target="_blank" rel="noopener" class="btn btn-outline">مشاهده پروژه زنده ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- نمای کلی -->
+  <section id="overview" class="container">
+    <div class="section-title"><h2>نمای کلی پروژه</h2></div>
+    <div class="overview-grid">
+      <div class="overview-item">
+        <i data-lucide="flask-conical" style="width:36px;height:36px;"></i>
+        <h4>مشتری</h4>
+        <p>آزمایشگاه تحقیقاتی نانوژن</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="user-circle" style="width:36px;height:36px;"></i>
+        <h4>نقش من</h4>
+        <p>توسعه‌دهنده فرانت‌اند و طراح تجربه کاربری</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="calendar-days" style="width:36px;height:36px;"></i>
+        <h4>مدت زمان</h4>
+        <p>۳ ماه</p>
+      </div>
+      <div class="overview-item">
+        <i data-lucide="cpu" style="width:36px;height:36px;"></i>
+        <h4>تکنولوژی اصلی</h4>
+        <p>Three.js، React، Tailwind</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- چالش -->
+  <section>
+    <div class="container">
+      <div class="section-title"><h2>چالش‌ها</h2></div>
+      <div class="two-col">
+        <div>
+          <p>آزمایشگاه نانوژن یک وب‌سایت قدیمی با رابط کاربری گیج‌کننده و سرعت پایین داشت. اطلاعات تحقیقاتی پیچیده به شکلی نامناسب نمایش داده می‌شد و هیچ انیمیشن تعاملی برای جذب بازدیدکننده وجود نداشت.</p>
+          <p>هدف اصلی، ساخت پلتفرمی بود که هم اعتبار علمی آزمایشگاه را منتقل کند، هم تجربه‌ای مدرن و غوطه‌ورکننده با المان‌های بصری فراهم آورد. چالش بزرگ پیاده‌سازی موشن‌گرافیک‌های علمی بدون قربانی کردن سرعت بود.</p>
+        </div>
+        <div class="img-frame">
+          <img src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="چالش وب‌سایت قدیمی">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- راه‌حل -->
+  <section>
+    <div class="container">
+      <div class="section-title"><h2>راه‌حل نوآورانه</h2></div>
+      <div class="two-col">
+        <div class="img-frame">
+          <img src="https://images.unsplash.com/photo-1532187863486-abd21db1e9fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="راه‌حل طراحی">
+        </div>
+        <div>
+          <p>ما از رویکرد Glassmorphism برای ایجاد عمق و احساس مدرن بودن استفاده کردیم. پس‌زمینه سه‌بعدی با Three.js یک مارپیچ مولکولی در حال چرخش و ذرات شناور درخشان را به تصویر می‌کشد که حس فضای آزمایشگاهی را زنده می‌کند.</p>
+          <p>بخش‌های مختلف سایت مانند تجهیزات، مقالات و تیم تحقیقاتی با کارت‌های شیشه‌ای و انیمیشن‌های hover طراحی شدند. تمامی انیمیشن‌ها بهینه‌سازی شده‌اند تا حتی روی موبایل‌های میان‌رده نیز روان اجرا شوند.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ویژگی‌های کلیدی -->
+  <section>
+    <div class="container">
+      <div class="section-title"><h2>ویژگی‌های شاخص</h2></div>
+      <div class="features-grid">
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="atom"></i></div>
+          <h3>انیمیشن مولکولی سه‌بعدی</h3>
+          <p>مدل‌های سه‌بعدی اتم و پیوندها با WebGL که به صورت داینامیک در پس‌زمینه می‌چرخند.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="droplets"></i></div>
+          <h3>رابط شیشه‌ای (Glassmorphism)</h3>
+          <p>کارت‌ها و بخش‌های شفاف با افکت بلور و بازتاب نور برای حس فوق‌مدرن.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="zap"></i></div>
+          <h3>ذرات شناور تعاملی</h3>
+          <p>ذرات نورانی که با حرکت موس واکنش نشان می‌دهند و فضا را علمی‌تر می‌کنند.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="microscope"></i></div>
+          <h3>پنل مقالات و تحقیقات</h3>
+          <p>سیستم مدیریت محتوا برای انتشار آسان مقالات علمی با طراحی خوانا.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="smartphone"></i></div>
+          <h3>کاملاً واکنش‌گرا</h3>
+          <p>تجربه‌ی بدون نقص در موبایل، تبلت و دسکتاپ با حفظ انیمیشن‌ها.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon"><i data-lucide="gauge"></i></div>
+          <h3>عملکرد بهینه</h3>
+          <p>لودینگ سریع با کدهای اسپلیت و بهینه‌سازی WebGL برای دستگاه‌های مختلف.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- تکنولوژی‌ها -->
+  <section>
+    <div class="container">
+      <div class="section-title"><h2>تکنولوژی‌های استفاده شده</h2></div>
+      <div class="tech-cloud">
+        <span class="tech-tag">Three.js</span>
+        <span class="tech-tag">React</span>
+        <span class="tech-tag">Tailwind CSS</span>
+        <span class="tech-tag">WebGL</span>
+        <span class="tech-tag">Framer Motion</span>
+        <span class="tech-tag">Vite</span>
+        <span class="tech-tag">GitHub Actions</span>
+        <span class="tech-tag">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- نقل قول مشتری -->
+  <section>
+    <div class="container">
+      <div class="testimonial-card glass-card">
+        <div class="quote-icon"><i data-lucide="quote"></i></div>
+        <p class="text">"وب‌سایت جدید نانوژن دقیقاً همان چیزی بود که برای نمایش کارهای علمی پیشرفته نیاز داشتیم. رابط شیشه‌ای و انیمیشن‌های سه‌بعدی، بازدیدکنندگان را شگفت‌زده می‌کند و اعتبار ما را دوچندان کرده است."</p>
+        <img class="avatar" src="https://randomuser.me/api/portraits/women/68.jpg" alt="مدیر آزمایشگاه">
+        <p style="font-weight:700; color:#fff;">دکتر نیلوفر رضایی</p>
+        <p style="color:var(--muted);">مدیر تحقیق و توسعه، نانوژن</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA نهایی -->
+  <section class="cta-section">
+    <h2>پروژه را زنده ببینید</h2>
+    <p style="color:var(--muted); max-width:600px; margin:1.5rem auto;">وارد دنیای علمی نانوژن شوید و تاثیر طراحی مدرن را لمس کنید.</p>
+    <a href="https://nano-gene-six.vercel.app/" target="_blank" rel="noopener" class="btn btn-cyan" style="font-size:1.2rem; padding:16px 48px;">
+      <i data-lucide="external-link" style="width:20px;height:20px;"></i> مشاهده وب‌سایت
+    </a>
+  </section>
+
+  <footer>© ۱۴۰۴ — کیس‌استادی نانوژن | طراحی و توسعه توسط شما</footer>
+
+  <script>
+    // ==================== THREE.JS MOLECULAR SCENE ====================
+    const canvas = document.getElementById('molecularCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 18;
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0x0a1f3d);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0x00e5ff, 1, 50);
+    pointLight.position.set(5, 5, 10);
+    scene.add(pointLight);
+    const pointLight2 = new THREE.PointLight(0x4a00e0, 0.8, 50);
+    pointLight2.position.set(-5, -5, 8);
+    scene.add(pointLight2);
+
+    // Create molecule group
+    const moleculeGroup = new THREE.Group();
+    scene.add(moleculeGroup);
+
+    const atomPositions = [];
+    const numAtoms = 30;
+    const radius = 5;
+
+    // Create atoms (spheres) and store positions
+    for (let i = 0; i < numAtoms; i++) {
+      const theta = (i / numAtoms) * Math.PI * 4;
+      const y = Math.sin(theta * 2) * 3;
+      const r = radius + Math.sin(theta * 3) * 1.5;
+      const x = Math.cos(theta) * r;
+      const z = Math.sin(theta) * r * 0.6;
+
+      const position = new THREE.Vector3(x, y, z);
+      atomPositions.push(position);
+
+      const atomGeometry = new THREE.SphereGeometry(0.3, 16, 16);
+      const atomMaterial = new THREE.MeshStandardMaterial({
+        color: i % 2 === 0 ? 0x00e5ff : 0x4a00e0,
+        roughness: 0.3,
+        metalness: 0.6,
+        emissive: i % 2 === 0 ? 0x001122 : 0x110022,
+        emissiveIntensity: 0.4
+      });
+      const atom = new THREE.Mesh(atomGeometry, atomMaterial);
+      atom.position.copy(position);
+      moleculeGroup.add(atom);
+    }
+
+    // Create bonds (cylinders) between nearby atoms
+    for (let i = 0; i < atomPositions.length; i++) {
+      for (let j = i + 1; j < atomPositions.length; j++) {
+        const dist = atomPositions[i].distanceTo(atomPositions[j]);
+        if (dist < 3.2) {
+          const start = atomPositions[i];
+          const end = atomPositions[j];
+          const midPoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+          const direction = new THREE.Vector3().subVectors(end, start);
+          const length = direction.length();
+          
+          const cylinderGeometry = new THREE.CylinderGeometry(0.08, 0.08, length, 6);
+          const cylinderMaterial = new THREE.MeshStandardMaterial({
+            color: 0x00e5ff,
+            roughness: 0.5,
+            transparent: true,
+            opacity: 0.3,
+            emissive: 0x001122,
+            emissiveIntensity: 0.2
+          });
+          const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+          cylinder.position.copy(midPoint);
+          
+          cylinder.quaternion.setFromUnitVectors(
+            new THREE.Vector3(0, 1, 0),
+            direction.clone().normalize()
+          );
+          moleculeGroup.add(cylinder);
+        }
+      }
+    }
+
+    // Add floating particles around
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 300;
+    const posArray = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      posArray[i] = (Math.random() - 0.5) * 25;
+      posArray[i+1] = (Math.random() - 0.5) * 15;
+      posArray[i+2] = (Math.random() - 0.5) * 15;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.08,
+      color: 0x00e5ff,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      opacity: 0.6
+    });
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      moleculeGroup.rotation.y += 0.002;
+      moleculeGroup.rotation.x += 0.001;
+      particles.rotation.y -= 0.0008;
+      particles.rotation.x += 0.0004;
+      
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Init Lucide icons
+    lucide.createIcons();
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
