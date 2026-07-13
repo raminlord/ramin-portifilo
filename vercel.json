@@ -1,6 +1,8 @@
 {
   "rewrites": [
       { "source": "/web-design-tabriz", "destination": "/home/tabriz.html" },
-      {"source": "/web-design-cost-tabriz" , "destination": "/blog/web-design-cost-tabriz.html"}
+      {"source": "/web-design-cost-tabriz" , "destination": "/blog/web-design-cost-tabriz.html"},
+      {"source":"/choose-web-design-company-tabriz", "destination":"/blog/choose-web-design-company-tabriz.html"}
+      
   ]
 }
